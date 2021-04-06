@@ -7,7 +7,7 @@
 list_of_packages <- c("tidyverse", "ape", 
                       "MCMCglmm", "phytools",
                       "ggpmisc", "ggpubr",
-                      "broom.mixed")
+                      "broom.mixed", "reshape2")
 lapply(list_of_packages, library, character.only = TRUE)
 
 # load function for phylogenetic correlation
@@ -40,6 +40,14 @@ autocorr.plot(Mod2$Sol)
 heidel.diag(Mod2$VCV)
 heidel.diag(Mod2$Sol)
 
+# RAM Model with 4 level Ovulation signs
+summary(Mod3)
+plot(Mod3$VCV)
+autocorr.plot(Mod3$VCV)
+autocorr.plot(Mod3$Sol)
+heidel.diag(Mod3$VCV)
+heidel.diag(Mod3$Sol)
+
 # Table of model results
 Mod1_Res <- tidy(Mod1, 
                  effects = c("fixed", "ran_pars"),
@@ -62,41 +70,127 @@ Mod3_Res <- tidy(Mod3,
 
 #-----------------------------------------#
 #      Extracting model parameters        #
-#      Lambda, Correlations, Blups        #
+#      Correlations, Blups                # 
 #      Model 1 w/ 4 level OvSig           #
 #-----------------------------------------#
+# Data frame of covariance and variance components
+m1_vcv <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitVTDwSD.Species"])),
+  "ssd_os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitSSD.Species"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod1$VCV[, "traitSSD:traitVTDwSD.Species"])),
+  "vtd" = c(as.mcmc(
+    Mod1$VCV[, "traitVTDwSD:traitVTDwSD.Species"])),
+  "ssd" = c(as.mcmc(
+    Mod1$VCV[, "traitSSD:traitSSD.Species"])),
+  "os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
+  )
 
-# Phylogenetic signal (Pagel's lambda)
-phyloSig_OvSigs <- Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]/
-  (Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"] + 
-     Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.units"])
-posterior.mode(phyloSig_OvSigs); HPDinterval(phyloSig_OvSigs); plot(phyloSig_OvSigs)
+m2_vcv <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitVTDwSD.Species"])),
+  "ssd_os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitSSD.Species"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod2$VCV[, "traitSSD:traitVTDwSD.Species"])),
+  "vtd" = c(as.mcmc(
+    Mod2$VCV[, "traitVTDwSD:traitVTDwSD.Species"])),
+  "ssd" = c(as.mcmc(
+    Mod2$VCV[, "traitSSD:traitSSD.Species"])),
+  "os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitOvulation_Signs_bin.Species"]))
+)
 
-phyloSig_VTD <- Mod1$VCV[, "traitVTDwSD:traitVTDwSD.Species"]/
-  (Mod1$VCV[, "traitVTDwSD:traitVTDwSD.Species"] + 
-     Mod1$VCV[, "traitVTDwSD:traitVTDwSD.units"])
-posterior.mode(phyloSig_VTD); HPDinterval(phyloSig_VTD); plot(phyloSig_VTD)
+m3_vcv <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitVTDwSD.Species"])),
+  "ssd_os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitSSD.Species"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod3$VCV[, "traitSSD:traitVTDwSD.Species"])),
+  "vtd" = c(as.mcmc(
+    Mod3$VCV[, "traitVTDwSD:traitVTDwSD.Species"])),
+  "ssd" = c(as.mcmc(
+    Mod3$VCV[, "traitSSD:traitSSD.Species"])),
+  "os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
+)
 
-phyloSig_SSD <- Mod1$VCV[, "traitSSD:traitSSD.Species"]/
-  (Mod1$VCV[, "traitSSD:traitSSD.Species"] + 
-     Mod1$VCV[, "traitSSD:traitSSD.units"])
-posterior.mode(phyloSig_SSD); HPDinterval(phyloSig_SSD); plot(phyloSig_SSD)
+# Phylogenetic correlations - 4 level OS Model with Lambda estimated
+m1_vtd_os_corr <- phylo_corr(covar_XY = m1_vcv$vtd_os,
+                             var_X = m1_vcv$vtd,
+                             var_Y = m1_vcv$os)
 
-# Phylogenetic correlations
-phyloCorr_VTD_OS <- Mod1$VCV[, "traitOvulation_Signs:traitVTDwSD.Species"]/
-  (sqrt(Mod1$VCV[, "traitVTDwSD:traitVTDwSD.Species"] * 
-          Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
-mean(phyloCorr_VTD_OS); HPDinterval(phyloCorr_VTD_OS); plot(phyloCorr_VTD_OS)
+m1_ssd_os_corr <- phylo_corr(covar_XY = m1_vcv$ssd_os,
+                             var_X = m1_vcv$ssd,
+                             var_Y = m1_vcv$os)
 
-phyloCorr_VTD_SSD <- Mod1$VCV[, "traitSSD:traitVTDwSD.Species"]/
-  (sqrt(Mod1$VCV[, "traitVTDwSD:traitVTDwSD.Species"] * 
-          Mod1$VCV[, "traitSSD:traitSSD.Species"]))
-mean(phyloCorr_VTD_SSD); HPDinterval(phyloCorr_VTD_SSD); plot(phyloCorr_VTD_SSD)
+m1_ssd_vtd_corr <- phylo_corr(covar_XY = m1_vcv$vtd_ssd,
+                              var_X = m1_vcv$ssd,
+                              var_Y = m1_vcv$vtd)
 
-phyloCorr_SSD_OS <- Mod1$VCV[, "traitOvulation_Signs:traitSSD.Species"]/
-  (sqrt(Mod1$VCV[, "traitSSD:traitSSD.Species"] * 
-          Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
-mean(phyloCorr_SSD_OS); HPDinterval(phyloCorr_SSD_OS); plot(phyloCorr_SSD_OS)
+# Phylogenetic correlations - 2 level OS Model with Lambda estimated
+m2_vtd_os_corr <- phylo_corr(covar_XY = m2_vcv$vtd_os,
+                             var_X = m2_vcv$vtd,
+                             var_Y = m2_vcv$os)
+
+m2_ssd_os_corr <- phylo_corr(covar_XY = m2_vcv$ssd_os,
+                             var_X = m2_vcv$ssd,
+                             var_Y = m2_vcv$os)
+
+m2_ssd_vtd_corr <- phylo_corr(covar_XY = m2_vcv$vtd_ssd,
+                              var_X = m2_vcv$ssd,
+                              var_Y = m2_vcv$vtd)
+
+# Phylogenetic correlations - 4 level OS RAM Model with Lambda fixed
+m3_vtd_os_corr <- phylo_corr(covar_XY = m3_vcv$vtd_os,
+                             var_X = m3_vcv$vtd,
+                             var_Y = m3_vcv$os)
+
+m3_ssd_os_corr <- phylo_corr(covar_XY = m3_vcv$ssd_os,
+                             var_X = m3_vcv$ssd,
+                             var_Y = m3_vcv$os)
+
+m3_ssd_vtd_corr <- phylo_corr(covar_XY = m3_vcv$vtd_ssd,
+                              var_X = m3_vcv$ssd,
+                              var_Y = m3_vcv$vtd)
+
+#----------- Ploting posterior correlations ---------------#
+# 4 level OS sign with lambda estimated
+post_cor_vtd_os <- m1_vcv$vtd_os/
+  sqrt(m1_vcv$os * m1_vcv$vtd)
+
+post_cor_ssd_os <- m1_vcv$ssd_os/
+  sqrt(m1_vcv$os * m1_vcv$ssd)
+
+post_cor_ssd_vtd <- m1_vcv$vtd_ssd/
+  sqrt(m1_vcv$vtd * m1_vcv$ssd)
+
+mod1dens <- data.frame(OS_VTD = c(post_cor_vtd_os),
+                       OS_SSD = c(post_cor_ssd_os),
+                       SSD_VTD = c(post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod1dens_melted <- melt(mod1dens)
+
+# Phylogenetic model plot
+ggplot(mod1dens_melted, 
+       aes(x = value, 
+           fill = variable)) + 
+  geom_density(alpha = 0.25) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-1, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_discrete(name = "Posterior Correlation") +
+  theme_classic(base_size = 15)
+
+
 
 # Table of BLUPs (aka "ancestral states" in PGLMM)
 df_bf_coefs <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"), 
