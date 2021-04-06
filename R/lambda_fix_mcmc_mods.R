@@ -52,4 +52,4 @@ Mod3 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1),
                               nitt = NITT,
                               burnin = BURN,
                               thin = THIN)
-save(mod3, file = "TrivMacro_Model_Reduced_4levResp.Rdata")
+save(Mod3, file = "TrivMacro_Model_Reduced_4levResp.Rdata")
