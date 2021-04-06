@@ -1,0 +1,155 @@
+﻿Parvorder,Species,Habitat,Group size ,Social organization,Visual trait dimorphism score without  sexual dichromatism,Visual trait dimorphism score value with sexual dichromatism,Fission-fusion,Female body mass,Body mass dimorphism [g],References for group size,Notes,Ovulation_Signs,Ovulation_Signs_Reference,Philopatry,Tenure,Age at first reproduction,Inbreeding risk,Body mass,Population density,Homerange size,Males per group,Females per group,Source_Cols_N-V
+Catarrhini,Allenopithecus nigroviridis,closed,35,mm-mf,3,3,yes,3180,1.93,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Alouatta caraya,closed,10.1,sm-mf,3,8,no,4240,1.54,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Alouatta fusca/guariba,closed,6.5,sm-mf,1,4.5,no,4550,1.27,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Alouatta palliala,closed,15.1,mm-mf,0,0,no,5350,1.34,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,HD,98,39,Yes,6580,59,0.19,3,6,Lukas&Clutton-Brock2011
+Platyrrhini,Alouatta pigra,closed,6.3,sm-mf,0,0,no,6430,1.77,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Alouatta seniculus,closed,7.9,sm-mf,4,4,no,5210,1.28,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,HP,90,52,Yes,6420,45,0.1,2,2,Lukas&Clutton-Brock2011
+Platyrrhini,Aotus nigriceps,closed,4.1,sm-sf,0,0,no,1040,0.84,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Aotus trivirgatus,closed,2.9,sm-sf,0,0,no,933,1.12,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Ateles belzebuth,closed,33.4,mm-mf,0,0,yes,8484,0.93,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Ateles geoffroyi,closed,31.9,mm-mf,0,0,yes,7290,1.07,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HD,78,67,Yes,7610,19,0.74,4,17,Lukas&Clutton-Brock2011
+Platyrrhini,Brachyteles arachnoides,closed,18,mm-mf,0,0,yes,8070,1.19,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HD,144,91,Yes,10600,5,1.06,7,7,Lukas&Clutton-Brock2011
+Platyrrhini,Cacajao calvus,closed,35.1,unk,2,2,yes,2880,1.2,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Cacajao melanocephalus,closed,42.8,mm-mf,0,0,yes,2710,1.17,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Callicebus brunneus,closed,3.4,sm-sf,0,0,no,805,1.06,Campbell et al. 2011,group size = means of means,,,,,,,,,,,,
+Platyrrhini,Callicebus moloch,closed,3.5,sm-sf,0,0,no,956,1.07,Campbell et al. 2011,group size = means of means,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callicebus personatus,closed,4.7,sm-sf,0,0,no,1380,0.92,Campbell et al. 2011,group size = means of means,,,,,,,,,,,,
+Platyrrhini,Callicebus torquatus,closed,3.9,sm-sf,0,0,no,980,1.22,Campbell et al. 2011,group size = means of means,,,,,,,,,,,,
+Platyrrhini,Callimico goeldii,closed,8,mm-sf,0,0,no,468,1.07,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callithrix aurita,closed,7.5,sm-sf,0,0,no,429,1,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callithrix geoffroyi,closed,5,mm-sf,0,0,no,359,1,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callithrix jacchus,closed,9.5,mm-mf,0,0,no,322,0.99,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callithrix kuhlii,closed,9,sm-sf,0,0,no,375,1,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Callithrix penicillata,closed,9.5,mm-sf,0,0,no,312,1.1,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Cebuella pygmaea,closed,5.5,sm-sf,0,0,no,122,0.9,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Cebus albifrons,closed,19.8,mm-mf,0,0,no,2290,1.39,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Cebus apella,closed,18,mm-mf,0,0,no,2489,1.36,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Cebus capucinus,closed,16.4,mm-mf,0,0,no,2437,1.35,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HP,54,49,Yes,3010,28,0.35,3,5,Lukas&Clutton-Brock2011
+Platyrrhini,Cebus olivaceus,closed,21,sm-mf,0,0,no,2633,1.23,Campbell et al. 2011,,,,HP,120,73,Yes,2800,25,1.73,1,7,Lukas&Clutton-Brock2011
+Catarrhini,Cercocebus galeritus,closed,28.5,mm-mf,0,0,no,5260,1.83,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercocebus torquatus,closed,21.8,mm-mf,0,0,no,5500,1.72,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus ascanius,closed,28.7,sm-mf,0,0,yes_seasonal_influxes,2901,1.56,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HP,24,57,No,3540,107,0.17,1,9,Lukas&Clutton-Brock2011
+Catarrhini,Cercopithecus campbelli,closed,9.3,sm-mf,0,0,no,2700,1.67,Campbell et al. 2011,,,,HP,34,36,No,3640,18,0.02,1,4,Lukas&Clutton-Brock2011
+Catarrhini,Cercopithecus cephus,closed,6,sm-mf,0,0,no,2880,1.49,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus diana ,closed,24.1,sm-mf,3,3,no,3900,1.33,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus erythrogaster,closed,6,unk,0,0,unk,2400,1.71,Rowe and Myers 2011,,,,,,,,,,,,,
+Catarrhini,Cercopithecus hamlyni,closed,7.8,unk,3,3,no,3360,1.63,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus mitis,closed,23.9,sm-mf,2,2,yes_seasonal_influxes,4628,1.64,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HP,40,58,No,5040,70,0.11,1,9,Lukas&Clutton-Brock2011
+Catarrhini,Cercopithecus mona,closed,9.8,sm-mf,0,0,no,2733,1.72,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus neglectus,closed,9.2,sm-mf,3,3,no,4130,1.78,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus nictitans,closed,12,sm-mf,0,0,no,4260,1.57,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus petaurista,closed,10.7,sm-mf,0,0,no,2918,1.47,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Cercopithecus pogonias,closed,11.7,sm-mf,0,0,no,2900,1.47,Rowe and Myers 2011,,,,,,,,,,,,,
+Catarrhini,Cercopithecus sclateri,closed,11.9,unk,0,0,unk,2900,1.24,Rowe and Myers 2011,,,,,,,,,,,,,
+Catarrhini,Cercopithecus/Allochrocebus lhoseti,closed,23.5,sm-mf,4,4,no,3450,1.73,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Cercopithecus/Allochrocebus solatus,closed,16.9,sm-mf,3,3,no,3920,1.76,Rowe and Myers 2011,,,,,,,,,,,,,
+Platyrrhini,Chiropotes albinasus,closed,4.2,mm-mf,0,0,yes,2490,1.27,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Chiropotes satanas,closed,32,mm-mf,0,0,yes,2770,1.08,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Chlorocebus pygerythrus,open,21,mm-mf,4,4,no,3576,1.42,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Colobus angolensis,closed,81,mm-mf,2,2,no,7570,1.28,Campbell et al. 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Colobus guereza,closed,9,sm-mf,0,0,no,7506,1.29,Campbell et al. 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Colobus polykomos,closed,13.6,mm-mf,0,0,no,8300,1.19,Campbell et al. 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Colobus satanas,closed,13.7,mm-mf,0,0,no,7420,1.4,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Colobus vellerosus,closed,15.2,mm-mf,0,0,no,7220,1.17,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Erythrocebus patas,open,30,sm-mf,4,4,yes_seasonal_influxes,6500,1.91,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,HP,24,32,No,8010,0.3,28.8,1,10,Lukas&Clutton-Brock2011
+Catarrhini,Gorilla beringei,closed,10.2,sm-mf,10,10,no,97500,1.67,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Gorilla gorilla ,closed,11.1,sm-mf,10,10,no,71500,2.38,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,HD,120,92,Yes,114000,1,4.11,2,4,Lukas&Clutton-Brock2011
+Catarrhini,Homo sapiens,open,490,multilevel,10,10,yes,54400,1.14,Layton and O'Hara 2009,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates hoolock,closed,3.1,sm-sf,2.5,9.5,no,6350,1.12,Rowe and Myers 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates agilis,closed,4.3,sm-sf,3,3,no,5820,1.01,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates lar,closed,4.4,sm-sf,0,0,no,5381,1.08,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates moloch,closed,3.5,sm-sf,0,0,no,6250,1.05,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates muelleri,closed,3.4,sm-sf,2,2,no,6010,0.94,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates pileatus,closed,4,sm-sf,2.5,11.5,no,5440,1.01,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Hylobates klossii,closed,4.3,sm-sf,0,0,no,5920,0.96,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Lagothrix lagotricha,closed,31.8,mm-mf,0,0,no,7020,1.04,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Leontopithecus chrysomelas,closed,6.5,mm-sf,0,0,no,535,1.16,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Leontopithecus rosalia,closed,6.5,sm-sf,0,0,no,598,1.04,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Lophocebus albigena,closed,16.1,mm-mf,0,0,no,6010,1.31,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca arctoides,closed,15,mm-mf,0,0,no,8400,1.45,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca assamensis,closed,24.3,mm-mf,0,0,no,6900,1.64,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca cyclopis,closed,27.1,mm-mf,0,0,no,4940,1.21,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca fascicularis,closed,23.5,mm-mf,3,3,yes,3518,1.42,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,HP,22,42,No,4590,50,0.47,5,11,Lukas&Clutton-Brock2011
+Catarrhini,Macaca fuscata,closed,45.6,mm-mf,0,0,yes,8030,1.73,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,HP,30,52,No,10100,30,1.46,7,18,Lukas&Clutton-Brock2011
+Catarrhini,Macaca mulatta,closed,39.2,mm-mf,0,0,no,5670,1.4,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,HP,19,41,No,6450,11,6.03,9,24,Lukas&Clutton-Brock2011
+Catarrhini,Macaca nemestrina,closed,48,mm-mf,0,0,no,6539,1.7,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca nigra,closed,36.7,mm-mf,0,0,no,4570,1.81,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca radiata,closed,21.9,mm-mf,0,0,no,3856,1.64,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca silenus,closed,19,sm-mf,0,0,no,6100,1.46,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca sinica,closed,22.7,mm-mf,0,0,no,3200,1.78,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,HP,50,51,No,4660,30,0.41,3,6,Lukas&Clutton-Brock2011
+Catarrhini,Macaca sylvanus,closed,33.1,mm-mf,0,0,yes,9625,1.51,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,HP,36,48,No,11500,12,2.68,5,7,Lukas&Clutton-Brock2011
+Catarrhini,Macaca thibetana,closed,31,mm-mf,0,0,no,9500,1.6,Rowe and Myers 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Macaca tonkeana,closed,10,mm-mf,0,0,yes,9000,1.66,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Mandrillus leucophaeus,closed,58,mm-mf,24.5,24.5,yes,12500,1.4,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Mandrillus sphinx,closed,481.8,mm-mf,32,32,yes,12800,2.69,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Mico argentatus,closed,8,sm-mf,0,0,no,360,0.92,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Mico humeralifer,closed,6.5,unk,0,0,no,380,0.95,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Mico nigriceps,closed,5,unk,0,0,no,390,0.95,Rowe and Myers 2011,,,,,,,,,,,,,
+Catarrhini,Miopithecus talapoin,closed,64,mm-mf,4,4,unk,1560,1.24,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Nasalis larvatus,closed,30,multilevel,9,9,yes,9730,1.99,Grueter 2009,,Slight,Rooker&Gavrilets2018,HD,72,51,Yes,12300,9,1.42,1,4,Lukas&Clutton-Brock2011
+Catarrhini,Nomascus concolor,closed,4,sm-sf,0,4,no,7620,1.02,Rowe and Myers 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Nomascus gabriellae,closed,3.9,sm-sf,0,8,no,5200,1.43,Rowe and Myers 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Nomascus leucogenys,closed,3.6,sm-sf,0,8.5,no,7320,1.01,Rowe and Myers 2011,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Oreonax flavicauda,closed,11,mm-mf,2,2,no,7160,1.29,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Pan paniscus,closed,30.5,mm-mf,0,0,yes,33200,1.36,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Pan troglodytes,closed,47.8,mm-mf,0,0,yes,40367,1.23,Rowe and Myers 2011,,Present,Rooker&Gavrilets2018,HD,144,122,Yes,45100,2,11,7,12,Lukas&Clutton-Brock2011
+Catarrhini,Papio anubis,open,49.3,mm-mf,4,4,no,13300,1.73,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HP,45,68,No,15000,2,28,9,18,Lukas&Clutton-Brock2011
+Catarrhini,Papio cynocephalus,open,55.3,mm-mf,2,2,no,12000,1.86,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HP,51,66,No,15100,10,25,7,19,Lukas&Clutton-Brock2011
+Catarrhini,Papio hamadryas,open,85.6,multilevel,13,13,yes,10300,1.75,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HD,60,53,Yes,16900,4,9.3,7,8,Lukas&Clutton-Brock2011
+Catarrhini,Papio papio,open,62,multilevel,6,6,yes,12100,1.78,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Papio ursinus,open,48.7,mm-mf,2,2,yes,14800,2.01,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Piliocolobus badius,closed,34.1,mm-mf,0,0,no,8210,1.02,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HD,108,49,Yes,8430,132,0.43,4,11,Lukas&Clutton-Brock2011
+Catarrhini,Piliocolobus rufomitratus,closed,11.2,mm-mf,0,0,no,7210,1.34,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Pithecia irrorata,closed,3.1,sm-sf,0,0,no,2070,1.09,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Pithecia monachus,closed,3.8,sm-sf,2,2,no,2110,1.24,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Pithecia pithecia,closed,4.6,sm-sf,0,10,no,1580,1.23,Campbell et al. 2011,,,,,,,,,,,,,
+Catarrhini,Pongo abelii,closed,1.6,solitary,18,18,yes,41148,2.05,Rowe and Myers 2011,Excluded from data analysis,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Pongo pygmaeus,closed,1.2,solitary,22,22,yes,36948,2.17,Rowe and Myers 2011,Excluded from data analysis ,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Presbytis comata,closed,6.8,sm-mf,0,0,no,6710,1,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Presbytis hosei,closed,7.5,sm-mf,0,0,no,5630,1.1,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Presbytis melalophos/femoralis,closed,14.5,mm-mf,0,0,no,6567,1,Grueter 2009,Presbytis siamensis in Grueter 2009,,,,,,,,,,,,
+Catarrhini,Presbytis potenziani,closed,3.8,sm-mf,0,0,no,6400,0.96,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Presbytis rubicunda,closed,8,sm-mf,0,0,no,6221,1.01,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Presbytis thomasi,closed,8.9,sm-mf,0,0,no,6690,1.01,Grueter 2009,,,,HD,72,65,Yes,6690,27,0.09,1,5,Lukas&Clutton-Brock2011
+Catarrhini,Procolobus verus,closed,7.8,sm-mf,0,0,no,4200,1.12,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HD,48,30,Yes,3980,19,0.17,2,3,Lukas&Clutton-Brock2011
+Platyrrhini,Pygathrix cinerea,closed,88,unk,3,3,unk,8200,1.25,Grueter 2013,,,,,,,,,,,,,
+Platyrrhini,Pygathrix nemaeus,closed,15.8,unk,3,3,yes,7000,1.37,Grueter 2013,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Pygathrix nigripes,closed,33.7,multilevel,5,5,yes,7100,1.34,Grueter 2013,,,,,,,,,,,,,
+Catarrhini,Rhinopithecus avunculus,closed,80,multilevel,5,5,yes,8500,1.65,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Rhinopithecus bieti,closed,210,multilevel,8,8,yes,9960,1.51,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Rhinopithecus brelichi,closed,400,multilevel,12,12,yes,8000,1.81,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Rhinopithecus roxellana,closed,215,multilevel,8,8,yes,11600,1.54,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saguinus bicolor,closed,4.9,sm-sf,0,0,no,430,1,Rowe and Myers 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus fuscicollis,closed,6,sm-sf,0,0,no,397,1.02,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saguinus geoffroyi,closed,6.2,mm-mf,0,0,no,534,0.93,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saguinus imperator,closed,4.8,sm-sf,0,0,no,475,1,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saguinus inustus,closed,6,unk,0,0,no,430,1,Rowe and Myers 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus labiatus,closed,7.5,mm-mf,0,0,no,529,0.93,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus leucopus,closed,5.2,unk,0,0,no,490,1.04,Rowe and Myers 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus midas,closed,5.8,mm-sf,0,0,no,591,0.91,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saguinus mystax,closed,7,mm-sf,0,0,no,538,1.17,Campbell et al. 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus nigricollus,closed,5.6,sm-sf,0,0,no,484,0.97,Rowe and Myers 2011,,,,,,,,,,,,,
+Platyrrhini,Saguinus oedipus,closed,6,mm-sf,0,0,no,445,0.94,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saimiri boliviensis,closed,60,mm-mf,4,4,no,711,1.28,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Platyrrhini,Saimiri oerstedii,closed,50,,4,4,no,680,1.32,Campbell et al. 2011,,Slight,Rooker&Gavrilets2018,HD,66,36,Yes,714,129,0.11,4,9,Lukas&Clutton-Brock2011
+Platyrrhini,Saimiri sciureus,closed,32.5,mm-mf,4,4,no,742,1.15,Campbell et al. 2011,,Absent,Rooker&Gavrilets2018,HD,48,36,Yes,750,36,0.69,3,8,Lukas&Clutton-Brock2011
+Catarrhini,Semnopithecus achates,open,28.7,mm-mf,1,1,no,10130,1.11,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Semnopithecus ajax,closed,73,mm-mf,2,2,no,10130,1.11,Minhas et al. 2010,,,,,,,,,,,,,
+Catarrhini,Semnopithecus entellus,open,20.6,mm-mf,0,0,no,11340,1.6,Grueter 2009,,,,HP,28,40,No,12600,17,1.33,2,11,Lukas&Clutton-Brock2011
+Catarrhini,Semnopithecus priam,open,31.1,mm-mf,0,0,no,6577,1.6,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Semnopithecus schistaceus,closed,35.2,mm-mf,1,1,yes_seasonal_influxes,14800,1.3,Grueter 2009;  Sayers and Norconk 2008,,,,,,,,,,,,,
+Catarrhini,Symphalangus syndactylus,closed,3.6,sm-sf,3.5,3.5,no,10710,1.11,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Theropithecus gelada,open,156.2,multilevel,13,13,yes,11700,1.62,Campbell et al. 2011,,Present,Rooker&Gavrilets2018,HP,43,46,No,16000,51,1.18,23,59,Lukas&Clutton-Brock2011
+Catarrhini,Trachypithecus auratus,closed,14,sm-mf,0,0,no,7100,1,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Trachypithecus cristatus,closed,26,sm-mf,0,0,no,6060,1.11,Rowe and Myers 2011,,Absent,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus delacouri,open,9.6,sm-mf,0,0,no,7500,1.07,Workman and Schmitt 2012,,,,,,,,,,,,,
+Catarrhini,Trachypithecus francoisi,open,8.7,sm-mf,0,0,no,7350,1.05,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus geei,closed,10.7,sm-mf,0,0,no,9500,1.14,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Trachypithecus johnii,closed,10,sm-mf,0,0,no,11200,1.07,Grueter 2009,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus leucocephalus,open,10.3,sm-mf,0,0,no,7350,1.19,Grueter 2009,,,,,,,,,,,,,
+Catarrhini,Trachypithecus obscurus,closed,17,mm-mf,0,0,no,6765,1.09,Grueter 2009,,Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus phayrei,closed,12.2,mm-mf,0,0,no,7182,1.08,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus pileatus,closed,8.1,sm-mf,0,0,no,9860,1.22,Grueter 2009,,Absent_Slight,Rooker&Gavrilets2018,,,,,,,,,,
+Catarrhini,Trachypithecus poliocephalus,open,8,sm-mf,0,0,no,7350,1.19,Schneider et al. 2010 ,,,,,,,,,,,,,
+Catarrhini,Trachypithecus vetulus,closed,12,sm-mf,0,0,no,5103,1.44,Grueter 2009,,,,HP,36,42,No,7860,175,0.02,1,4,Lukas&Clutton-Brock2011
