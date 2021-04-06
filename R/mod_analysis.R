@@ -10,13 +10,16 @@ list_of_packages <- c("tidyverse", "ape",
                       "broom.mixed")
 lapply(list_of_packages, library, character.only = TRUE)
 
+# load function for phylogenetic correlation
+source("./R/Functions/PhyloCorr.R")
+
 # Loading data and tree from data cleaning
 load("./Data/reduced_data.Rdata")
 load("./Data/10ktree.Rdata")
 
 # Load outputs from macroevolutionary MCMC models
-load("./Output/Data/TrivMacro_Model_4levResp.Rdata")
-load("./Output/Data/TrivMacro_Model_2levResp.Rdata")
+load("./Results/Data/TrivMacro_Model_4levResp.Rdata")
+load("./Results/Data/TrivMacro_Model_2levResp.Rdata")
 
 #------ Diagnostics to check posteriors-------#
 # Model with 4 level Ovulation signs
