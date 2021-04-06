@@ -53,31 +53,3 @@ Mod3 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1),
                               burnin = BURN,
                               thin = THIN)
 save(Mod3, file = "TrivMacro_Model_Reduced_4levResp.Rdata")
-
-
-Mod4 <- MCMCglmmRAM::MCMCglmm(Ovulation_Signs ~ log(SSD) + log(VTDwSD+1),
-                              random = ~ animal, 
-                              rcov = ~ units, 
-                              pedigree = tree, 
-                              family = c("threshold"),
-                              reduced = TRUE,
-                              data = reduced_data
-                              )
-
-Mod5 <- MCMCglmmRAM::MCMCglmm(Ovulation_Signs ~ log(SSD),
-                              random = ~ animal, 
-                              rcov = ~ units, 
-                              pedigree = tree, 
-                              family = c("threshold"),
-                              reduced = TRUE,
-                              data = reduced_data)
-
-Mod6 <- MCMCglmmRAM::MCMCglmm(Ovulation_Signs ~ log(VTDwSD+1),
-                              random = ~ animal, 
-                              rcov = ~ units, 
-                              pedigree = tree, 
-                              family = c("threshold"),
-                              reduced = TRUE,
-                              data = reduced_data)
-
-
