@@ -160,18 +160,18 @@ m3_ssd_vtd_corr <- phylo_corr(covar_XY = m3_vcv$vtd_ssd,
 
 #----------- Ploting posterior correlations ---------------#
 # 4 level OS sign with lambda estimated
-post_cor_vtd_os <- m1_vcv$vtd_os/
+m1_post_cor_vtd_os <- m1_vcv$vtd_os/
   sqrt(m1_vcv$os * m1_vcv$vtd)
 
-post_cor_ssd_os <- m1_vcv$ssd_os/
+m1_post_cor_ssd_os <- m1_vcv$ssd_os/
   sqrt(m1_vcv$os * m1_vcv$ssd)
 
-post_cor_ssd_vtd <- m1_vcv$vtd_ssd/
+m1_post_cor_ssd_vtd <- m1_vcv$vtd_ssd/
   sqrt(m1_vcv$vtd * m1_vcv$ssd)
 
-mod1dens <- data.frame(OS_VTD = c(post_cor_vtd_os),
-                       OS_SSD = c(post_cor_ssd_os),
-                       SSD_VTD = c(post_cor_ssd_vtd))
+mod1dens <- data.frame(OS_VTD = c(m1_post_cor_vtd_os),
+                       OS_SSD = c(m1_post_cor_ssd_os),
+                       SSD_VTD = c(m1_post_cor_ssd_vtd))
 
 # Melt data for density plots
 mod1dens_melted <- melt(mod1dens)
@@ -187,17 +187,56 @@ ggplot(mod1dens_melted,
   xlim(-1, 1) +
   labs(x = "Posterior",
        y = "Density") +
-  scale_fill_discrete(name = "Posterior Correlation") +
+  scale_fill_discrete(name = "Phylogenetic Correlation",
+                      labels = c("Ovulation Signs-VTD", 
+                                 "Ovulation Signs-SSD", 
+                                 "VTD-SSD")) +
   theme_classic(base_size = 15)
 
+# 4 level OS sign with lambda fixed
+m3_post_cor_vtd_os <- m3_vcv$vtd_os/
+  sqrt(m3_vcv$os * m3_vcv$vtd)
 
+m3_post_cor_ssd_os <- m3_vcv$ssd_os/
+  sqrt(m3_vcv$os * m3_vcv$ssd)
 
+m3_post_cor_ssd_vtd <- m3_vcv$vtd_ssd/
+  sqrt(m3_vcv$vtd * m3_vcv$ssd)
+
+mod3dens <- data.frame(OS_VTD = c(m3_post_cor_vtd_os),
+                       OS_SSD = c(m3_post_cor_ssd_os),
+                       SSD_VTD = c(m3_post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod3dens_melted <- melt(mod3dens)
+
+# Phylogenetic model plot
+ggplot(mod3dens_melted, 
+       aes(x = value, 
+           fill = variable)) + 
+  geom_density(alpha = 0.25) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-0.1, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_discrete(name = "Phylogenetic Correlation",
+                      labels = c("Ovulation Signs-VTD", 
+                                 "Ovulation Signs-SSD", 
+                                 "VTD-SSD")) +
+  theme_classic(base_size = 15)
+
+#-------------------------- BLUPs analysis --------------------------#
 # Table of BLUPs (aka "ancestral states" in PGLMM)
 df_bf_coefs <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"), 
                       Value = colMeans(Mod1$Sol)) %>%
-  separate(Trait, c("Trait","Type","Species"), sep = "\\.", fill = "right") %>% 
+  separate(Trait, c("Trait","Type","Species"), 
+           sep = "\\.", fill = "right") %>% 
   filter(Type == "Species") %>%
-  filter(Trait %in% c("traitVTDwSD", "traitSSD", "traitOvulation_Signs")) %>% 
+  filter(Trait %in% c("traitVTDwSD", 
+                      "traitSSD", 
+                      "traitOvulation_Signs")) %>% 
   select(-Type) %>%
   spread(Trait, Value)
 
@@ -206,7 +245,10 @@ df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"),
                             Value = colMeans(Mod1$Sol),
                             L_HPD = HPDinterval(Mod1$Sol)[,"lower"],
                             U_HPD = HPDinterval(Mod1$Sol)[,"upper"]) %>%
-  separate(Trait, c("Trait","Type","Species"), sep = "\\.", fill = "right") %>% 
+  separate(Trait, c("Trait","Type","Species"), 
+           sep = "\\.", fill = "right") %>% 
   filter(Type == "Species") %>%
-  filter(Trait %in% c("traitVTDwSD", "traitSSD", "traitOvulation_Signs")) %>% 
+  filter(Trait %in% c("traitVTDwSD", 
+                      "traitSSD", 
+                      "traitOvulation_Signs")) %>% 
   select(-Type)
