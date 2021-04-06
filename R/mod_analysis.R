@@ -20,6 +20,8 @@ load("./Data/10ktree.Rdata")
 # Load outputs from macroevolutionary MCMC models
 load("./Results/Data/TrivMacro_Model_4levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_2levResp.Rdata")
+load("./Results/Data/TrivMacro_Model_Reduced_4levResp.Rdata")
+
 
 #------ Diagnostics to check posteriors-------#
 # Model with 4 level Ovulation signs
@@ -50,6 +52,13 @@ Mod2_Res <- tidy(Mod2,
                  conf.int = TRUE, 
                  conf.method = "HPDinterval",
                  conf.level = 0.95)
+
+Mod3_Res <- tidy(Mod3, 
+                 effects = c("fixed", "ran_pars"),
+                 conf.int = TRUE, 
+                 conf.method = "HPDinterval",
+                 conf.level = 0.95)
+
 
 #-----------------------------------------#
 #      Extracting model parameters        #
