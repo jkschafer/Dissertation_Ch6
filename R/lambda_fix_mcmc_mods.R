@@ -1,3 +1,7 @@
+# MCMCglmmRAM not on CRAN - must download from site
+install.packages("https://jarrod.bio.ed.ac.uk/MCMCglmmRAM_2.24.tar.gz", 
+                 repos = NULL, type = "source")
+
 # Loading packages
 list_of_packages <- c("ape", 
                       "MCMCglmmRAM")
@@ -23,6 +27,12 @@ PEprior_Reduced <- list(R = list(V = diag(3) * 1e-15,
                                            nu = 0.002, 
                                            fix = 3)))
 
+set.seed(8675309) # Calls Jenny for a good time
+
+# Run parameters for posterior sample size of N = 2000
+nsamp <- 2000
+BURN <- 500000; THIN <- 1000; (NITT <- BURN + THIN*nsamp)
+
 
 Mod3 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), 
                                     log(SSD), 
@@ -39,7 +49,7 @@ Mod3 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1),
                               pr = TRUE, 
                               pl = TRUE,
                               reduced = TRUE,
-                              nitt = 13000,
-                              burnin = 3000,
-                              thin = 10)
+                              nitt = NITT,
+                              burnin = BURN,
+                              thin = THIN)
 save(mod3, file = "TrivMacro_Model_Reduced_4levResp.Rdata")
