@@ -73,7 +73,7 @@ Mod3_Res <- tidy(Mod3,
 #      Correlations, Blups                # 
 #      Model 1 w/ 4 level OvSig           #
 #-----------------------------------------#
-# Data frame of covariance and variance components
+# Data frame of phylogenetic covariance and variance components
 m1_vcv <- data.frame(
   "vtd_os" = c(as.mcmc(
     Mod1$VCV[, "traitOvulation_Signs:traitVTDwSD.Species"])),
@@ -117,6 +117,52 @@ m3_vcv <- data.frame(
     Mod3$VCV[, "traitSSD:traitSSD.Species"])),
   "os" = c(as.mcmc(
     Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
+)
+
+# Data frame of phylogenetic covariance and variance components
+m1_vcv_env <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitVTDwSD.units"])),
+  "ssd_os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitSSD.units"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod1$VCV[, "traitSSD:traitVTDwSD.units"])),
+  "vtd" = c(as.mcmc(
+    Mod1$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
+  "ssd" = c(as.mcmc(
+    Mod1$VCV[, "traitSSD:traitSSD.units"])),
+  "os" = c(as.mcmc(
+    Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.units"]))
+)
+
+m2_vcv_env <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitVTDwSD.units"])),
+  "ssd_os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitSSD.units"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod2$VCV[, "traitSSD:traitVTDwSD.units"])),
+  "vtd" = c(as.mcmc(
+    Mod2$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
+  "ssd" = c(as.mcmc(
+    Mod2$VCV[, "traitSSD:traitSSD.units"])),
+  "os" = c(as.mcmc(
+    Mod2$VCV[, "traitOvulation_Signs_bin:traitOvulation_Signs_bin.units"]))
+)
+
+m3_vcv_env <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitVTDwSD.units"])),
+  "ssd_os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitSSD.units"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod3$VCV[, "traitSSD:traitVTDwSD.units"])),
+  "vtd" = c(as.mcmc(
+    Mod3$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
+  "ssd" = c(as.mcmc(
+    Mod3$VCV[, "traitSSD:traitSSD.units"])),
+  "os" = c(as.mcmc(
+    Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.units"]))
 )
 
 # Phylogenetic correlations - 4 level OS Model with Lambda estimated
@@ -177,21 +223,27 @@ mod1dens <- data.frame(OS_VTD = c(m1_post_cor_vtd_os),
 mod1dens_melted <- melt(mod1dens)
 
 # Phylogenetic model plot
-ggplot(mod1dens_melted, 
+p1 <- ggplot(mod1dens_melted, 
        aes(x = value, 
            fill = variable)) + 
-  geom_density(alpha = 0.25) +
+  geom_density(alpha = 0.5) +
   geom_vline(xintercept = 0,
              color = "#000000",
              linetype = "dashed") +
   xlim(-1, 1) +
   labs(x = "Posterior",
        y = "Density") +
-  scale_fill_discrete(name = "Phylogenetic Correlation",
-                      labels = c("Ovulation Signs-VTD", 
-                                 "Ovulation Signs-SSD", 
-                                 "VTD-SSD")) +
+  scale_fill_manual(name = "Phylogenetic Correlation",
+                      labels = c("Ovulation Signs & VTD", 
+                                 "Ovulation Signs & SSD", 
+                                 "VTD & SSD"),
+                      values = c("#D55E00", 
+                                 "#0072B2", 
+                                 "#009E73")) +
   theme_classic(base_size = 15)
+p1 + theme(legend.position = c(0.2, 0.9),
+          legend.direction = "vertical",
+          legend.background = element_rect(fill = "darkgray"))
 
 # 4 level OS sign with lambda fixed
 m3_post_cor_vtd_os <- m3_vcv$vtd_os/
@@ -211,21 +263,108 @@ mod3dens <- data.frame(OS_VTD = c(m3_post_cor_vtd_os),
 mod3dens_melted <- melt(mod3dens)
 
 # Phylogenetic model plot
-ggplot(mod3dens_melted, 
+p2 <- ggplot(mod3dens_melted, 
        aes(x = value, 
            fill = variable)) + 
-  geom_density(alpha = 0.25) +
+  geom_density(alpha = 0.5) +
   geom_vline(xintercept = 0,
              color = "#000000",
              linetype = "dashed") +
   xlim(-0.1, 1) +
   labs(x = "Posterior",
        y = "Density") +
-  scale_fill_discrete(name = "Phylogenetic Correlation",
-                      labels = c("Ovulation Signs-VTD", 
-                                 "Ovulation Signs-SSD", 
-                                 "VTD-SSD")) +
+  scale_fill_manual(name = "Phylogenetic Correlation",
+                    labels = c("Ovulation Signs & VTD", 
+                               "Ovulation Signs & SSD", 
+                               "VTD & SSD"),
+                    values = c("#D55E00", 
+                               "#0072B2", 
+                               "#009E73")) +
   theme_classic(base_size = 15)
+p2 + theme(legend.position = c(0.3, 0.9),
+           legend.direction = "vertical",
+           legend.background = element_rect(fill = "darkgray"))
+
+#--------- Environmental correlations -----------------#
+# 4 level OS sign with lambda estimated
+m1_env_post_cor_vtd_os <- m1_vcv_env$vtd_os/
+  sqrt(m1_vcv_env$os * m1_vcv_env$vtd)
+
+m1_env_post_cor_ssd_os <- m1_vcv_env$ssd_os/
+  sqrt(m1_vcv_env$os * m1_vcv_env$ssd)
+
+m1_env_post_cor_ssd_vtd <- m1_vcv_env$vtd_ssd/
+  sqrt(m1_vcv_env$vtd * m1_vcv_env$ssd)
+
+mod1dens_env <- data.frame(OS_VTD = c(m1_env_post_cor_vtd_os),
+                           OS_SSD = c(m1_env_post_cor_ssd_os),
+                           SSD_VTD = c(m1_env_post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod1dens_env_melted <- melt(mod1dens_env)
+
+# Environmental correlation plot
+p3 <- ggplot(mod1dens_env_melted, 
+             aes(x = value, 
+                 fill = variable)) + 
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-1, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_manual(name = "Environmental Correlation",
+                    labels = c("Ovulation Signs & VTD", 
+                               "Ovulation Signs & SSD", 
+                               "VTD & SSD"),
+                    values = c("#D55E00", 
+                               "#0072B2", 
+                               "#009E73")) +
+  theme_classic(base_size = 15)
+p3 + theme(legend.position = c(0.2, 0.9),
+           legend.direction = "vertical",
+           legend.background = element_rect(fill = "darkgray"))
+
+# 4 level OS sign with lambda estimated
+m3_env_post_cor_vtd_os <- m3_vcv_env$vtd_os/
+  sqrt(m3_vcv_env$os * m3_vcv_env$vtd)
+
+m3_env_post_cor_ssd_os <- m3_vcv_env$ssd_os/
+  sqrt(m3_vcv_env$os * m3_vcv_env$ssd)
+
+m3_env_post_cor_ssd_vtd <- m3_vcv_env$vtd_ssd/
+  sqrt(m3_vcv_env$vtd * m3_vcv_env$ssd)
+
+mod3dens_env <- data.frame(OS_VTD = c(m3_env_post_cor_vtd_os),
+                           OS_SSD = c(m3_env_post_cor_ssd_os),
+                           SSD_VTD = c(m3_env_post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod3dens_env_melted <- melt(mod3dens_env)
+
+# Environmental correlation plot w/ lambda fixed
+p4 <- ggplot(mod3dens_env_melted, 
+             aes(x = value, 
+                 fill = variable)) + 
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-0.1, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_manual(name = "Environmental Correlation",
+                    labels = c("Ovulation Signs & VTD", 
+                               "Ovulation Signs & SSD", 
+                               "VTD & SSD"),
+                    values = c("#D55E00", 
+                               "#0072B2", 
+                               "#009E73")) +
+  theme_classic(base_size = 15)
+p4 + theme(legend.position = c(0.31, 0.9),
+           legend.direction = "vertical",
+           legend.background = element_rect(fill = "darkgray"))
 
 #-------------------------- BLUPs analysis --------------------------#
 # Table of BLUPs (aka "ancestral states" in PGLMM)
