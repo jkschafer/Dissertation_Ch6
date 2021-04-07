@@ -8,7 +8,7 @@ list_of_packages <- c("tidyverse", "ape",
                       "MCMCglmm", "phytools",
                       "ggpmisc", "ggpubr",
                       "broom.mixed", "reshape2",
-                      "diversitree", "RPANDA"
+                      "diversitree", "RPANDA",
                       "plyr")
 lapply(list_of_packages, library, character.only = TRUE)
 
