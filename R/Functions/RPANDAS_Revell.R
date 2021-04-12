@@ -24,7 +24,7 @@ fit.multi.rpanda <- function(tree, par)
                      cst.lamb = TRUE,
                      cst.mu = TRUE,
                      cond = "crown",
-                     f = 87/89,
+                     f = 99/301, # n of species in phylogeny/total in 10Ktree
                      dt = 1e-3)
   bvardcst <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.var, 
@@ -34,7 +34,7 @@ fit.multi.rpanda <- function(tree, par)
                      expo.lamb = TRUE,
                      cst.mu = TRUE,
                      cond = "crown",
-                     f = 87/89,
+                     f = 99/301,
                      dt = 1e-3)
   bcstdvar <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.cst, 
@@ -44,7 +44,7 @@ fit.multi.rpanda <- function(tree, par)
                      cst.lamb = TRUE,
                      expo.mu = TRUE,
                      cond = "crown",
-                     f = 87/89,
+                     f = 99/301,
                      dt = 1e-3)
   bvardvar <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.var, 
@@ -54,7 +54,7 @@ fit.multi.rpanda <- function(tree, par)
                      expo.lamb = TRUE,
                      expo.mu = TRUE,
                      cond = "crown",
-                     f = 87/89,
+                     f = 99/301,
                      dt = 1e-3)
   return(list("bcstdcst" = bcstdcst,
               "bvardcst" = bvardcst,
