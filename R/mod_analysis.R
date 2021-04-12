@@ -119,51 +119,6 @@ m3_vcv <- data.frame(
     Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
 )
 
-# Data frame of phylogenetic covariance and variance components
-m1_vcv_env <- data.frame(
-  "vtd_os" = c(as.mcmc(
-    Mod1$VCV[, "traitOvulation_Signs:traitVTDwSD.units"])),
-  "ssd_os" = c(as.mcmc(
-    Mod1$VCV[, "traitOvulation_Signs:traitSSD.units"])),
-  "vtd_ssd" = c(as.mcmc(
-    Mod1$VCV[, "traitSSD:traitVTDwSD.units"])),
-  "vtd" = c(as.mcmc(
-    Mod1$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
-  "ssd" = c(as.mcmc(
-    Mod1$VCV[, "traitSSD:traitSSD.units"])),
-  "os" = c(as.mcmc(
-    Mod1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.units"]))
-)
-
-m2_vcv_env <- data.frame(
-  "vtd_os" = c(as.mcmc(
-    Mod2$VCV[, "traitOvulation_Signs_bin:traitVTDwSD.units"])),
-  "ssd_os" = c(as.mcmc(
-    Mod2$VCV[, "traitOvulation_Signs_bin:traitSSD.units"])),
-  "vtd_ssd" = c(as.mcmc(
-    Mod2$VCV[, "traitSSD:traitVTDwSD.units"])),
-  "vtd" = c(as.mcmc(
-    Mod2$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
-  "ssd" = c(as.mcmc(
-    Mod2$VCV[, "traitSSD:traitSSD.units"])),
-  "os" = c(as.mcmc(
-    Mod2$VCV[, "traitOvulation_Signs_bin:traitOvulation_Signs_bin.units"]))
-)
-
-m3_vcv_env <- data.frame(
-  "vtd_os" = c(as.mcmc(
-    Mod3$VCV[, "traitOvulation_Signs:traitVTDwSD.units"])),
-  "ssd_os" = c(as.mcmc(
-    Mod3$VCV[, "traitOvulation_Signs:traitSSD.units"])),
-  "vtd_ssd" = c(as.mcmc(
-    Mod3$VCV[, "traitSSD:traitVTDwSD.units"])),
-  "vtd" = c(as.mcmc(
-    Mod3$VCV[, "traitVTDwSD:traitVTDwSD.units"])),
-  "ssd" = c(as.mcmc(
-    Mod3$VCV[, "traitSSD:traitSSD.units"])),
-  "os" = c(as.mcmc(
-    Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.units"]))
-)
 
 # Phylogenetic correlations - 4 level OS Model with Lambda estimated
 m1_vtd_os_corr <- phylo_corr(covar_XY = m1_vcv$vtd_os,
@@ -285,91 +240,45 @@ p2 + theme(legend.position = c(0.3, 0.9),
            legend.direction = "vertical",
            legend.background = element_rect(fill = "darkgray"))
 
-#--------- Environmental correlations -----------------#
-# 4 level OS sign with lambda estimated
-m1_env_post_cor_vtd_os <- m1_vcv_env$vtd_os/
-  sqrt(m1_vcv_env$os * m1_vcv_env$vtd)
+#--------------------------------------------------------------------#
+#    Different plots for visualizing magnitude of correlations       #
+#--------------------------------------------------------------------#
+# Extracting posterior correlations and HPD intervals
+m3_corr_tbl <- data.frame(Traits = c("Ovulation Signs & VTD",
+                                     "Ovulation Signs & SSD",
+                                     "VTD & SSD"),
+                          Estimate = c(m3_vtd_os_corr[[1]],
+                                       m3_ssd_os_corr[[1]],
+                                       m3_ssd_vtd_corr[[1]]),
+                          Upper = c(m3_vtd_os_corr[[2]][, "upper"],
+                                    m3_ssd_os_corr[[2]][, "upper"],
+                                    m3_ssd_vtd_corr[[2]][, "upper"]),
+                          Lower = c(m3_vtd_os_corr[[2]][, "lower"],
+                                    m3_ssd_os_corr[[2]][, "lower"],
+                                    m3_ssd_vtd_corr[[2]][, "lower"]))
 
-m1_env_post_cor_ssd_os <- m1_vcv_env$ssd_os/
-  sqrt(m1_vcv_env$os * m1_vcv_env$ssd)
-
-m1_env_post_cor_ssd_vtd <- m1_vcv_env$vtd_ssd/
-  sqrt(m1_vcv_env$vtd * m1_vcv_env$ssd)
-
-mod1dens_env <- data.frame(OS_VTD = c(m1_env_post_cor_vtd_os),
-                           OS_SSD = c(m1_env_post_cor_ssd_os),
-                           SSD_VTD = c(m1_env_post_cor_ssd_vtd))
-
-# Melt data for density plots
-mod1dens_env_melted <- melt(mod1dens_env)
-
-# Environmental correlation plot
-p3 <- ggplot(mod1dens_env_melted, 
-             aes(x = value, 
-                 fill = variable)) + 
-  geom_density(alpha = 0.5) +
-  geom_vline(xintercept = 0,
-             color = "#000000",
-             linetype = "dashed") +
-  xlim(-1, 1) +
-  labs(x = "Posterior",
-       y = "Density") +
-  scale_fill_manual(name = "Environmental Correlation",
-                    labels = c("Ovulation Signs & VTD", 
-                               "Ovulation Signs & SSD", 
-                               "VTD & SSD"),
-                    values = c("#D55E00", 
-                               "#0072B2", 
-                               "#009E73")) +
+p3 <- ggplot(m3_corr_tbl, 
+             aes(x = Traits, 
+                 y = Estimate)) + 
+  geom_pointrange(aes(ymin = Lower,
+                      ymax = Upper)) + 
+  #geom_hline(yintercept = 0, 
+  #           linetype = "dashed",
+  #           alpha = 1) +
+  scale_x_discrete(limits = c("Ovulation Signs & VTD",
+                              "Ovulation Signs & SSD",
+                              "VTD & SSD")) +
+  labs(x = "Trait combinations",
+       y = "Correlation (Estimate +/- 95% HPD)") +
+  #ylim(0, 1) +
+  coord_flip() + 
   theme_classic(base_size = 15)
-p3 + theme(legend.position = c(0.2, 0.9),
-           legend.direction = "vertical",
-           legend.background = element_rect(fill = "darkgray"))
-
-# 4 level OS sign with lambda estimated
-m3_env_post_cor_vtd_os <- m3_vcv_env$vtd_os/
-  sqrt(m3_vcv_env$os * m3_vcv_env$vtd)
-
-m3_env_post_cor_ssd_os <- m3_vcv_env$ssd_os/
-  sqrt(m3_vcv_env$os * m3_vcv_env$ssd)
-
-m3_env_post_cor_ssd_vtd <- m3_vcv_env$vtd_ssd/
-  sqrt(m3_vcv_env$vtd * m3_vcv_env$ssd)
-
-mod3dens_env <- data.frame(OS_VTD = c(m3_env_post_cor_vtd_os),
-                           OS_SSD = c(m3_env_post_cor_ssd_os),
-                           SSD_VTD = c(m3_env_post_cor_ssd_vtd))
-
-# Melt data for density plots
-mod3dens_env_melted <- melt(mod3dens_env)
-
-# Environmental correlation plot w/ lambda fixed
-p4 <- ggplot(mod3dens_env_melted, 
-             aes(x = value, 
-                 fill = variable)) + 
-  geom_density(alpha = 0.5) +
-  geom_vline(xintercept = 0,
-             color = "#000000",
-             linetype = "dashed") +
-  xlim(-0.1, 1) +
-  labs(x = "Posterior",
-       y = "Density") +
-  scale_fill_manual(name = "Environmental Correlation",
-                    labels = c("Ovulation Signs & VTD", 
-                               "Ovulation Signs & SSD", 
-                               "VTD & SSD"),
-                    values = c("#D55E00", 
-                               "#0072B2", 
-                               "#009E73")) +
-  theme_classic(base_size = 15)
-p4 + theme(legend.position = c(0.31, 0.9),
-           legend.direction = "vertical",
-           legend.background = element_rect(fill = "darkgray"))
+p3
 
 #-------------------------- BLUPs analysis --------------------------#
 # Table of BLUPs (aka "ancestral states" in PGLMM)
-df_bf_coefs <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"), 
-                      Value = colMeans(Mod1$Sol)) %>%
+df_bf_coefs <- tibble(Trait = attr(colMeans(Mod3$Sol), "names"), 
+                      Value = colMeans(Mod3$Sol)) %>%
   separate(Trait, c("Trait","Type","Species"), 
            sep = "\\.", fill = "right") %>% 
   filter(Type == "Species") %>%
@@ -380,10 +289,10 @@ df_bf_coefs <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"),
   spread(Trait, Value)
 
 # Table of BLUPs with HPD intervals for estimates
-df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"), 
-                            Value = colMeans(Mod1$Sol),
-                            L_HPD = HPDinterval(Mod1$Sol)[,"lower"],
-                            U_HPD = HPDinterval(Mod1$Sol)[,"upper"]) %>%
+df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod3$Sol), "names"), 
+                            Value = colMeans(Mod3$Sol),
+                            L_HPD = HPDinterval(Mod3$Sol)[,"lower"],
+                            U_HPD = HPDinterval(Mod3$Sol)[,"upper"]) %>%
   separate(Trait, c("Trait","Type","Species"), 
            sep = "\\.", fill = "right") %>% 
   filter(Type == "Species") %>%
@@ -391,3 +300,59 @@ df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod1$Sol), "names"),
                       "traitSSD", 
                       "traitOvulation_Signs")) %>% 
   select(-Type)
+
+
+#--------- Plot of posterior BLUPs ------------------------#
+# Slope of relationship between OS and VTD
+os_vtd_slope <- Mod3$VCV[,"traitOvulation_Signs:traitVTDwSD.Species"]/
+  Mod3$VCV[,"traitVTDwSD:traitVTDwSD.Species"]
+mean(os_vtd_slope); HPDinterval(os_vtd_slope)
+
+# Plot for ovulation signals and VTD
+p4 <- ggplot(df_bf_coefs, 
+       aes(x = traitVTDwSD, 
+           y = traitOvulation_Signs, 
+           group = Species)) + 
+  geom_point(alpha = 0.7) +
+  geom_abline(intercept = 0, 
+              slope = mean(os_vtd_slope)) +
+  labs(x = "VTD (BLUP)",
+       y = "Ovulation Signals (BLUP)") + 
+  theme_classic(base_size = 15)
+p4
+
+# Slope of relationship between OS and SSD
+os_ssd_slope <- Mod3$VCV[,"traitOvulation_Signs:traitSSD.Species"]/
+  Mod3$VCV[,"traitSSD:traitSSD.Species"]
+mean(os_ssd_slope); HPDinterval(os_ssd_slope)
+
+# Plot for ovulation signals and SSD
+p5 <- ggplot(df_bf_coefs, 
+             aes(x = traitSSD, 
+                 y = traitOvulation_Signs, 
+                 group = Species)) + 
+  geom_point(alpha = 0.7) +
+  geom_abline(intercept = 0, 
+              slope = mean(os_ssd_slope)) +
+  labs(x = "SSD (BLUP)",
+       y = "Ovulation Signals (BLUP)") + 
+  theme_classic(base_size = 15)
+p5
+
+# Slope of relationship between OS and SSD
+vtd_ssd_slope <- Mod3$VCV[,"traitVTDwSD:traitSSD.Species"]/
+  Mod3$VCV[,"traitSSD:traitSSD.Species"]
+mean(vtd_ssd_slope); HPDinterval(vtd_ssd_slope)
+
+# Plot for VTD and SSD
+p6 <- ggplot(df_bf_coefs, 
+             aes(x = traitSSD, 
+                 y = traitVTDwSD, 
+                 group = Species)) + 
+  geom_point(alpha = 0.7) +
+  geom_abline(intercept = 0, 
+              slope = mean(vtd_ssd_slope)) +
+  labs(x = "SSD (BLUP)",
+       y = "VTD (BLUP)") + 
+  theme_classic(base_size = 15)
+p6
