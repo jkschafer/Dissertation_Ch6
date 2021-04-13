@@ -82,6 +82,13 @@ par.table <- data.frame("Apes"=c(results[[1]]$bcstdcst$lamb_par[1:2],
                                             results[[5]]$bcstdcst$mu_par[1:2]))
 par.table
 
+# Function to calculate species richness in a given point in time
+div.times <- c(max(branching.times(apes.tree)), 
+               max(branching.times(papionins.tree)),
+               max(branching.times(platyrrhines.tree)),
+               max(branching.times(colobines.tree)),
+               max(branching.times(cercopiths.tree)))
+
 # Plotting diversity through time for different clades
 plotdtt(results$apes.res$bcstdcst, 
         div.times[1],
