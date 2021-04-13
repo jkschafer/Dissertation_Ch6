@@ -356,3 +356,73 @@ p6 <- ggplot(df_bf_coefs,
        y = "VTD (BLUP)") + 
   theme_classic(base_size = 15)
 p6
+
+
+# Looking at clade specific patterns 
+tree2 <- multi2di(tree)
+plot(tree2, cex = 0.5)
+nodelabels(cex = 0.5)
+
+ape_tree  <- extract.clade(tree2, 153)
+papio_tree <- extract.clade(tree2, 115)
+platy_tree <- extract.clade(tree2, 170)
+colob_tree <- extract.clade(tree2, 139)
+cercop_tree <- extract.clade(tree2, 104)
+
+apes <- ape_tree$tip.label
+papios <- papio_tree$tip.label
+platys <- platy_tree$tip.label
+colobs <- colob_tree$tip.label
+cercs <- cercop_tree$tip.label
+
+df_bf_coefs$clade <- NULL
+df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% apes,
+                            paste0("apes"), 
+                            ifelse(df_bf_coefs$Species %in% papios,
+                            paste0("papionins"), 
+                            ifelse(df_bf_coefs$Species %in% platys,
+                                   paste0("platyrrhines"),
+                            ifelse(df_bf_coefs$Species %in% colobs,
+                                   paste0("colobines"),
+                            paste0("guenons")))))
+
+ggplot(data = df_bf_coefs,
+       aes(x = traitVTDwSD,
+           y = traitOvulation_Signs,
+           color = clade)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) + 
+  geom_abline(intercept = 0, 
+              slope = mean(os_vtd_slope), 
+              size = 1) +
+  labs(y = "Ovulation Signals (BLUP)",
+       x = "VTD (BLUP)") +
+  theme_classic(base_size = 15)
+
+ggplot(data = df_bf_coefs,
+       aes(x = traitSSD,
+           y = traitOvulation_Signs,
+           color = clade)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) + 
+  geom_abline(intercept = 0, 
+              slope = mean(os_ssd_slope),
+              size = 1) +
+  labs(y = "Ovulation Signals (BLUP)",
+       x = "SSD (BLUP)") +
+  theme_classic(base_size = 15)
+
+ggplot(data = df_bf_coefs,
+       aes(x = traitSSD,
+           y = traitVTDwSD,
+           color = clade)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) + 
+  geom_abline(intercept = 0, 
+              slope = mean(vtd_ssd_slope),
+              size = 1) +
+  labs(y = "VTD (BLUP)",
+       x = "SSD (BLUP)") +
+  theme_classic(base_size = 15)
+
+
