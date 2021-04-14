@@ -426,3 +426,64 @@ ggplot(data = df_bf_coefs,
   theme_classic(base_size = 15)
 
 
+# Correlation between trait correlations and speciation rate
+cor_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "apes")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "apes")])
+
+cor_pap_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "papionins")])
+
+cor_plat_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "platyrrhines")])
+
+cor_colob_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "colobines")])
+
+cor_guen_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "guenons")])
+# OS and SSD
+cor_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "apes")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "apes")])
+
+cor_pap_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "papionins")])
+
+cor_plat_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "platyrrhines")])
+
+cor_colob_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "colobines")])
+
+cor_guen_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "guenons")])
+
+df_corrs <- data.frame("Clade" = c("Apes",
+                                   "Papionins",
+                                   "Platyrrhines",
+                                   "Colobines",
+                                   "Guenons"),
+                       "Speciation" = c(0.4301551,
+                                        2.828000e-01,
+                                        0.3465664,
+                                        0.3008649,
+                                        2.741188e-01),
+                       "Corr_OSVTD" = c(cor_ape_os_vtd$estimate,
+                                        cor_pap_os_vtd$estimate,
+                                        cor_plat_os_vtd$estimate,
+                                        cor_colob_os_vtd$estimate,
+                                        cor_guen_os_vtd$estimate),
+                       "Corr_OSSSD" = c(cor_ape_os_ssd$estimate,
+                                        cor_pap_os_ssd$estimate,
+                                        cor_plat_os_ssd$estimate,
+                                        cor_colob_os_ssd$estimate,
+                                        cor_guen_os_ssd$estimate))

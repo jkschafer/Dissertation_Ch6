@@ -42,7 +42,7 @@ fit.multi.rpanda <- function(tree, par)
                      cst.lamb = TRUE,
                      cst.mu = TRUE,
                      cond = "crown",
-                     f = 204/301, # n of species in phylogeny/total in 10Ktree
+                     f = Ntip(tree)/301, # n of species in phylogeny/total in 10Ktree
                      dt = 1e-3)
   bvardcst <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.var, 
@@ -52,7 +52,7 @@ fit.multi.rpanda <- function(tree, par)
                      expo.lamb = TRUE,
                      cst.mu = TRUE,
                      cond = "crown",
-                     f = 204/301,
+                     f = Ntip(tree)/301,
                      dt = 1e-3)
   bcstdvar <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.cst, 
@@ -62,7 +62,7 @@ fit.multi.rpanda <- function(tree, par)
                      cst.lamb = TRUE,
                      expo.mu = TRUE,
                      cond = "crown",
-                     f = 204/301,
+                     f = Ntip(tree)/301,
                      dt = 1e-3)
   bvardvar <- fit_bd(tree, max(branching.times(tree)), 
                      f.lamb = lambda.var, 
@@ -72,7 +72,7 @@ fit.multi.rpanda <- function(tree, par)
                      expo.lamb = TRUE,
                      expo.mu = TRUE,
                      cond = "crown",
-                     f = 204/301,
+                     f = Ntip(tree)/301,
                      dt = 1e-3)
   return(list("bcstdcst" = bcstdcst,
               "bvardcst" = bvardcst,
@@ -92,6 +92,7 @@ results <- list("apes.res" = fit.multi.rpanda(apes_tree,
                                                    primates.par))
 
 
+
 aic.table <- matrix(nrow=4,ncol=5,NA)
 for(i in 1:5)
 {
@@ -109,8 +110,8 @@ aic.table
 
 par.table <- data.frame("Apes"=c(results[[1]]$bcstdcst$lamb_par[1:2],
                                  results[[1]]$bcstdcst$mu_par[1:2]),
-                        "Papionins"=c(results[[2]]$bcstdcst$lamb_par[1:2],
-                                      results[[2]]$bcstdcst$mu_par[1:2]),
+                        "Papionins"=c(results[[2]]$bcstdvar$lamb_par[1:2],
+                                      results[[2]]$bcstdvar$mu_par[1:2]),
                         "Platyrrhines"=c(results[[3]]$bcstdcst$lamb_par[1:2],
                                          results[[3]]$bcstdcst$mu_par[1:2]),
                         "Colobines"=c(results[[4]]$bcstdcst$lamb_par[1:2],
@@ -133,7 +134,7 @@ plotdtt(results$apes.res$bcstdcst,
         xlim = c(-max(div.times), 0),
         ylim = c(0, 80),
         div.time=div.times[1])
-plotdtt(results$papionins.res$bcstdcst, 
+plotdtt(results$papionins.res$bcstdvar, 
         div.times[2],
         N0 = Ntip(papio_tree),
         col = 6,
