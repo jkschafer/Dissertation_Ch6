@@ -262,15 +262,15 @@ p3 <- ggplot(m3_corr_tbl,
                  y = Estimate)) + 
   geom_pointrange(aes(ymin = Lower,
                       ymax = Upper)) + 
-  #geom_hline(yintercept = 0, 
-  #           linetype = "dashed",
-  #           alpha = 1) +
+  geom_hline(yintercept = 0, 
+             linetype = "dashed",
+             alpha = 1) +
   scale_x_discrete(limits = c("Ovulation Signs & VTD",
                               "Ovulation Signs & SSD",
                               "VTD & SSD")) +
   labs(x = "Trait combinations",
        y = "Correlation (Estimate +/- 95% HPD)") +
-  #ylim(0, 1) +
+  ylim(0, 1) +
   coord_flip() + 
   theme_classic(base_size = 15)
 p3
@@ -363,28 +363,37 @@ tree2 <- multi2di(tree)
 plot(tree2, cex = 0.5)
 nodelabels(cex = 0.5)
 
-ape_tree  <- extract.clade(tree2, 153)
+gr_ape_tree  <- extract.clade(tree2, 164)
+l_ape_tree <- extract.clade(tree2, 154)
 papio_tree <- extract.clade(tree2, 115)
-platy_tree <- extract.clade(tree2, 170)
 colob_tree <- extract.clade(tree2, 139)
 cercop_tree <- extract.clade(tree2, 104)
 
-apes <- ape_tree$tip.label
+platy_tree <- extract.clade(tree2, 170)
+callit_tree <- extract.clade(tree2, 181)
+cebid_tree <- extract.clade(tree2, 194)
+
+
+gr_ape <- gr_ape_tree$tip.label
+l_ape <- l_ape_tree$tip.label
 papios <- papio_tree$tip.label
 platys <- platy_tree$tip.label
 colobs <- colob_tree$tip.label
 cercs <- cercop_tree$tip.label
+#pithec <- tree2$tip.label[59]
 
 df_bf_coefs$clade <- NULL
-df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% apes,
-                            paste0("apes"), 
+df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% gr_ape,
+                            paste0("great_apes"),
+                            ifelse(df_bf_coefs$Species %in% l_ape,
+                                   paste0("lesser_apes"),
                             ifelse(df_bf_coefs$Species %in% papios,
                             paste0("papionins"), 
                             ifelse(df_bf_coefs$Species %in% platys,
                                    paste0("platyrrhines"),
                             ifelse(df_bf_coefs$Species %in% colobs,
                                    paste0("colobines"),
-                            paste0("guenons")))))
+                            paste0("guenons"))))))
 
 ggplot(data = df_bf_coefs,
        aes(x = traitVTDwSD,
@@ -427,9 +436,13 @@ ggplot(data = df_bf_coefs,
 
 
 # Correlation between trait correlations and speciation rate
-cor_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "apes")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "apes")])
+cor_g_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "great_apes")])
+
+cor_l_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "lesser_apes")])
 
 cor_pap_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
   df_bf_coefs$clade == "papionins")], df_bf_coefs$traitVTDwSD[which(
@@ -447,9 +460,13 @@ cor_guen_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
   df_bf_coefs$clade == "guenons")], df_bf_coefs$traitVTDwSD[which(
     df_bf_coefs$clade == "guenons")])
 # OS and SSD
-cor_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "apes")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "apes")])
+cor_g_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "great_apes")])
+
+cor_l_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
+  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "lesser_apes")])
 
 cor_pap_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
   df_bf_coefs$clade == "papionins")], df_bf_coefs$traitSSD[which(
@@ -467,23 +484,196 @@ cor_guen_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
   df_bf_coefs$clade == "guenons")], df_bf_coefs$traitSSD[which(
     df_bf_coefs$clade == "guenons")])
 
-df_corrs <- data.frame("Clade" = c("Apes",
+# VTD and SSD
+cor_g_ape_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "great_apes")])
+
+cor_l_ape_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "lesser_apes")])
+
+cor_pap_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "papionins")])
+
+cor_plat_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "platyrrhines")])
+
+cor_colob_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "colobines")])
+
+cor_guen_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
+  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "guenons")])
+
+
+df_corrs <- data.frame("Clade" = c("Great_Apes",
+                                   "Lesser_Apes",
                                    "Papionins",
                                    "Platyrrhines",
                                    "Colobines",
                                    "Guenons"),
-                       "Speciation" = c(0.4301551,
-                                        2.828000e-01,
-                                        0.3465664,
-                                        0.3008649,
-                                        2.741188e-01),
-                       "Corr_OSVTD" = c(cor_ape_os_vtd$estimate,
-                                        cor_pap_os_vtd$estimate,
-                                        cor_plat_os_vtd$estimate,
-                                        cor_colob_os_vtd$estimate,
-                                        cor_guen_os_vtd$estimate),
-                       "Corr_OSSSD" = c(cor_ape_os_ssd$estimate,
-                                        cor_pap_os_ssd$estimate,
-                                        cor_plat_os_ssd$estimate,
-                                        cor_colob_os_ssd$estimate,
-                                        cor_guen_os_ssd$estimate))
+                       Corr_OSVTD = c(cor_g_ape_os_vtd$estimate,
+                                      cor_l_ape_os_vtd$estimate,
+                                      cor_pap_os_vtd$estimate,
+                                      cor_plat_os_vtd$estimate,
+                                      cor_colob_os_vtd$estimate,
+                                      cor_guen_os_vtd$estimate),
+                       LCI_Corr_OSVTD = c(cor_g_ape_os_vtd$conf.int[1],
+                                          cor_l_ape_os_vtd$conf.int[1],
+                                          cor_pap_os_vtd$conf.int[1],
+                                          cor_plat_os_vtd$conf.int[1],
+                                          cor_colob_os_vtd$conf.int[1],
+                                          cor_guen_os_vtd$conf.int[1]),
+                       UCI_Corr_OSVTD = c(cor_g_ape_os_vtd$conf.int[2],
+                                          cor_l_ape_os_vtd$conf.int[2],
+                                          cor_pap_os_vtd$conf.int[2],
+                                          cor_plat_os_vtd$conf.int[2],
+                                          cor_colob_os_vtd$conf.int[2],
+                                          cor_guen_os_vtd$conf.int[2]),
+                       Corr_OSSSD = c(cor_g_ape_os_ssd$estimate,
+                                      cor_l_ape_os_ssd$estimate,
+                                      cor_pap_os_ssd$estimate,
+                                      cor_plat_os_ssd$estimate,
+                                      cor_colob_os_ssd$estimate,
+                                      cor_guen_os_ssd$estimate),
+                       LCI_Corr_OSSSD = c(cor_g_ape_os_ssd$conf.int[1],
+                                          cor_l_ape_os_ssd$conf.int[1],
+                                          cor_pap_os_ssd$conf.int[1],
+                                          cor_plat_os_ssd$conf.int[1],
+                                          cor_colob_os_ssd$conf.int[1],
+                                          cor_guen_os_ssd$conf.int[1]),
+                       UCI_Corr_OSSSD = c(cor_g_ape_os_ssd$conf.int[2],
+                                          cor_l_ape_os_ssd$conf.int[2],
+                                          cor_pap_os_ssd$conf.int[2],
+                                          cor_plat_os_ssd$conf.int[2],
+                                          cor_colob_os_ssd$conf.int[2],
+                                          cor_guen_os_ssd$conf.int[2]),
+                       Corr_VTDSSD = c(cor_g_ape_vtd_ssd$estimate,
+                                       cor_l_ape_vtd_ssd$estimate,
+                                       cor_pap_vtd_ssd$estimate,
+                                       cor_plat_vtd_ssd$estimate,
+                                       cor_colob_vtd_ssd$estimate,
+                                       cor_guen_vtd_ssd$estimate),
+                       LCI_Corr_VTDSSD = c(cor_g_ape_vtd_ssd$conf.int[1],
+                                           cor_l_ape_vtd_ssd$conf.int[1],
+                                           cor_pap_vtd_ssd$conf.int[1],
+                                           cor_plat_vtd_ssd$conf.int[1],
+                                           cor_colob_vtd_ssd$conf.int[1],
+                                           cor_guen_vtd_ssd$conf.int[1]),
+                       UCI_Corr_VTDSSD = c(cor_g_ape_vtd_ssd$conf.int[2],
+                                           cor_l_ape_vtd_ssd$conf.int[2],
+                                           cor_pap_vtd_ssd$conf.int[2],
+                                           cor_plat_vtd_ssd$conf.int[2],
+                                           cor_colob_vtd_ssd$conf.int[2],
+                                           cor_guen_vtd_ssd$conf.int[2]))
+
+
+# Merge clade rates and correlations
+load("./Results/Data/clade_rates_as.Rdata")
+
+corr_rates_df <- merge(x = df_corrs, 
+                       y = clade_rates, 
+                       by = "Clade")
+
+ggplot(data = corr_rates_df,
+       aes(x = Corr_OSVTD,
+           y = Sp_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Sp_Rate,
+                    ymax = U_Sp_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_OSVTD,
+                     xmax = UCI_Corr_OSVTD)) +
+  labs(y = "Speciation Rate +/- 95% CI",
+       x = "Ovulation Signal-VTD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+ggplot(data = corr_rates_df,
+       aes(x = Corr_OSSSD,
+           y = Sp_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Sp_Rate,
+                    ymax = U_Sp_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_OSSSD,
+                     xmax = UCI_Corr_OSSSD)) +
+  labs(y = "Speciation Rate +/- 95% CI",
+       x = "Ovulation Signal-SSD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+ggplot(data = corr_rates_df,
+       aes(x = Corr_VTDSSD,
+           y = Sp_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Sp_Rate,
+                    ymax = U_Sp_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_VTDSSD,
+                     xmax = UCI_Corr_VTDSSD)) +
+  labs(y = "Speciation Rate +/- 95% CI",
+       x = "VTD-SSD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+# Extinction rates
+ggplot(data = corr_rates_df,
+       aes(x = Corr_OSVTD,
+           y = Ex_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Ex_Rate,
+                    ymax = U_Ex_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_OSVTD,
+                     xmax = UCI_Corr_OSVTD)) +
+  labs(y = "Extinction Rate +/- 95% CI",
+       x = "Ovulation Signal-VTD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+ggplot(data = corr_rates_df,
+       aes(x = Corr_OSSSD,
+           y = Ex_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Ex_Rate,
+                    ymax = U_Ex_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_OSSSD,
+                     xmax = UCI_Corr_OSSSD)) +
+  labs(y = "Extinction Rate +/- 95% CI",
+       x = "Ovulation Signal-SSD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+ggplot(data = corr_rates_df,
+       aes(x = Corr_VTDSSD,
+           y = Ex_Rate)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = T) +
+  geom_errorbar(aes(ymin = L_Ex_Rate,
+                    ymax = U_Ex_Rate)) + 
+  geom_errorbarh(aes(xmin = LCI_Corr_VTDSSD,
+                     xmax = UCI_Corr_VTDSSD)) +
+  labs(y = "Extinction Rate +/- 95% CI",
+       x = "VTD-SSD Correlation +/- 95% CI") +
+  theme_classic(base_size = 15)
+
+
+
+#---------- Species specific rates -----------------#
+load("./Results/Data/tip_rates.Rdata")
+
+not_in_spdat <- rates[!rates$Species %in% 
+                      df_bf_coefs$Species,]
+unique(not_in_spdat$Species) # many
+
+
+
+
+# Attempt to extract species MCMC samples for correlations
+# instead of correlation of blup means
+dftest <- Mod3$Sol[, grep(pattern = "Species*", 
+                          x = colnames(Mod3$Sol))]
+
+
+
