@@ -152,5 +152,76 @@ legend("bottomleft",
        pch = 19)
 
 
+#-------------------- Starting Over --------------------------#
+library(phytools)
+
+load("./Data/reduced_data.Rdata")
+load("./Data/10Ktree.Rdata")
+
+# Plotting tree and characters
+tree <- multi2di(tree)
+row.names(reduced_data) <- reduced_data$Species
+plotTree(tree, ftype = "i", 
+         fsize = 0.5, lwd = 1) # Plot of tree
+rtree <- rotateNodes(tree, "all")
+plotTree(rtree, ftype = "i", 
+         fsize = 0.5, lwd = 1)
+rtree <- force.ultrametric(rtree)
+
+ssd <- log(reduced_data$SSD)
+names(ssd) <- reduced_data$Species
+
+vtd <- log(reduced_data$VTDwoSD + 1)
+names(vtd) <- reduced_data$Species
+
+ovsig <- setNames(reduced_data$Ovulation_Signs, 
+                  rownames(reduced_data))
+cols <- setNames(c("#F0E442", "#0072B2", 
+                   "#D55E00", "#CC79A7"),
+                 unique(as.vector(sapply(ovsig, levels))))
+cols
+
+
+mtrees <- make.simmap(rtree, 
+                      ovsig, 
+                      model = "ER", 
+                      nsim = 100)
+
+tips <- getStates(mtrees, "tips")
+tip.cols <- cols[tips]
+
+
+barcols <- setNames(sapply(tips,
+                           function(x, y) y[which(names(y) == x)],
+                           y = cols),
+                    names(tips))
+
+par(mar=c(5.1, 4.1, 4.1, 20), xpd=TRUE)
+plotTree.barplot(rtree,
+                 ssd,
+                 args.plotTree = list(ftype = "off"),
+                 args.barplot = list(col = barcols,
+                                     border = barcols, xlab = "",
+                                   xlim = c(-0.12, 1)),
+                 args.axis = list(at = seq(-0.12, 1.35,
+                                           by = 0.2)))
+legend(x = "topright",
+       legend = c("absent",
+                  "absent/slight",
+                  "slight",
+                  "present"),
+       col = cols,
+       pch = 22,
+       pt.cex=2,
+       pt.bg = cols,
+       box.col="transparent",
+       horiz = F,
+       inset=c(-0.2,0))
+mtext("log(SSD)", 1, at = 0.5, line = 2.5)
+## this is how I go back to my tree frame
+par(mfg=c(1,1))
+plot(tree, cols, ftype = 'off', mar=c(5.1, 1.1, 2.1, 0))
+axis(1, at = seq(0, 40, by = 40))
+mtext("time", 1 , at = 25, line = 2)
 
 
