@@ -7,7 +7,8 @@
 list_of_packages <- c("tidyverse", "ape", 
                       "MCMCglmm", "phytools",
                       "ggpmisc", "ggpubr",
-                      "broom.mixed", "reshape2")
+                      "broom.mixed", "reshape2",
+                      "factoextra", "corrplot")
 lapply(list_of_packages, library, character.only = TRUE)
 
 # load function for phylogenetic correlation
@@ -583,7 +584,7 @@ ggplot(data = corr_rates_df,
        aes(x = Corr_OSVTD,
            y = Sp_Rate)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
+  geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSVTD,
@@ -661,14 +662,51 @@ ggplot(data = corr_rates_df,
 
 
 #---------- Species specific rates -----------------#
-load("./Results/Data/tip_rates.Rdata")
+load("./Results/Data/tip_rates_ah.Rdata")
 
-not_in_spdat <- rates[!rates$Species %in% 
+not_in_spdat <- tip_rates[!tip_rates$Species %in% 
                       df_bf_coefs$Species,]
 unique(not_in_spdat$Species) # many
+in_spdata <- tip_rates[tip_rates$Species %in%
+                         df_bf_coefs$Species,]
+unique(in_spdata)
 
+df_bf_coefs_divrates <- merge(df_bf_coefs, tip_rates,
+                              by.x = "Species",
+                              by.y = "Species")
 
+pca_df <- df_bf_coefs_divrates %>%
+  select(traitOvulation_Signs,
+         traitSSD, traitVTDwSD, 
+         SpRate, ExRate)
+rownames(pca_df) <- df_bf_coefs_divrates$Species
 
+# PCA analysis of blups and diversification rates
+res.pca <- prcomp(pca_df, scale = TRUE)
+
+fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 50))
+
+# Variable contributions
+fviz_contrib(res.pca, choice = "var", axes = 1, top = 5)
+fviz_contrib(res.pca, choice = "var", axes = 2, top = 5)
+fviz_contrib(res.pca, choice = "var", axes = 3, top = 5)
+fviz_contrib(res.pca, choice = "var", axes = 4, top = 5)
+fviz_contrib(res.pca, choice = "var", axes = 5, top = 5)
+
+# Individual contributions
+fviz_contrib(res.pca, choice = "ind", axes = 1:2)
+
+# Correlation plot
+corrplot(res.pca$x, is.corr=FALSE)
+
+fviz_pca_ind(res.pca,
+             geom.ind = "point", # show points only (nbut not "text")
+             col.ind = factor(df_bf_coefs_divrates$clade), # color by groups
+             palette = c("#56B4E9", "#009E73", "#F0E442", 
+                         "#0072B2", "#D55E00", "#CC79A7"),
+             addEllipses = TRUE, # Concentration ellipses
+             legend.title = "Groups") + 
+  theme_classic(base_size = 15)
 
 # Attempt to extract species MCMC samples for correlations
 # instead of correlation of blup means
