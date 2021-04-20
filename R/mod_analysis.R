@@ -22,8 +22,72 @@ load("./Data/10ktree.Rdata")
 load("./Results/Data/TrivMacro_Model_4levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_2levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_Reduced_4levResp.Rdata")
+load("./Results/Data/UniMacro_Model_OvSign.Rdata")
+load("./Results/Data/UniMacro_Model_VTD.Rdata")
+load("./Results/Data/UniMacro_Model_SSD.Rdata")
 
+#--------------------------------------------------------------# 
+#    Calculating Pagel's lambda from univariate analyses
+#--------------------------------------------------------------# 
+# Ovulation signals
+OvSign_lambda <- Mod6$VCV[, "Species"]/
+  (Mod6$VCV[, "Species"] + 
+     Mod6$VCV[, "units"])
+mean(OvSign_lambda) 
+HPDinterval(OvSign_lambda) 
+plot(OvSign_lambda)
 
+# VTD
+VTD_lambda <- Mod5$VCV[, "Species"]/
+  (Mod5$VCV[, "Species"] + 
+     Mod5$VCV[, "units"])
+mean(VTD_lambda) 
+HPDinterval(VTD_lambda) 
+plot(VTD_lambda)
+
+# SSD
+SSD_lambda <- Mod4$VCV[, "Species"]/
+  (Mod4$VCV[, "Species"] + 
+     Mod4$VCV[, "units"])
+mean(SSD_lambda) 
+HPDinterval(SSD_lambda) 
+plot(SSD_lambda)
+
+lambda_tbl <- data.frame(Trait = c("Ovulation_Signs",
+                                   "VTD",
+                                   "SSD"),
+                         Lambda = c(mean(OvSign_lambda),
+                                    mean(VTD_lambda),
+                                    mean(SSD_lambda)),
+                         Lower = c(HPDinterval(OvSign_lambda)[, "lower"],
+                                   HPDinterval(VTD_lambda)[, "lower"],
+                                   HPDinterval(SSD_lambda)[, "lower"]),
+                         Upper = c(HPDinterval(OvSign_lambda)[, "upper"],
+                                   HPDinterval(VTD_lambda)[, "upper"],
+                                   HPDinterval(SSD_lambda)[, "upper"]))
+stargazer(lambda_tbl, type = "latex", summary = F)
+# Plot lambdas
+p_lamb <- ggplot(lambda_tbl, 
+             aes(x = Trait, 
+                 y = Lambda)) + 
+  geom_pointrange(aes(ymin = Lower,
+                      ymax = Upper)) + 
+  geom_hline(yintercept = 0, 
+             linetype = "solid",
+             alpha = 1) +
+  scale_x_discrete(limits = c("Ovulation_Signs",
+                              "VTD",
+                              "SSD"),
+                   labels = c("Ovulation Signs",
+                              "VTD",
+                              "SSD")) +
+  labs(x = "",
+       y = expression("Pagel's" ~ lambda ~ "+/- 95% HPD")) +
+  ylim(0, 1) +
+  coord_flip() + 
+  theme_classic(base_size = 15)
+p_lamb + theme(axis.line.y = element_line(linetype = "blank"),
+               axis.text.y = element_text(angle = 45))
 #------ Diagnostics to check posteriors-------#
 # Model with 4 level Ovulation signs
 summary(Mod1)
@@ -257,6 +321,7 @@ m3_corr_tbl <- data.frame(Traits = c("Ovulation Signs & VTD",
                           Lower = c(m3_vtd_os_corr[[2]][, "lower"],
                                     m3_ssd_os_corr[[2]][, "lower"],
                                     m3_ssd_vtd_corr[[2]][, "lower"]))
+stargazer(m3_corr_tbl, type = "latex", summary = F)
 
 p3 <- ggplot(m3_corr_tbl, 
              aes(x = Traits, 
@@ -264,17 +329,18 @@ p3 <- ggplot(m3_corr_tbl,
   geom_pointrange(aes(ymin = Lower,
                       ymax = Upper)) + 
   geom_hline(yintercept = 0, 
-             linetype = "dashed",
+             linetype = "solid",
              alpha = 1) +
   scale_x_discrete(limits = c("Ovulation Signs & VTD",
                               "Ovulation Signs & SSD",
                               "VTD & SSD")) +
-  labs(x = "Trait combinations",
-       y = "Correlation (Estimate +/- 95% HPD)") +
+  labs(x = "",
+       y = "Phylogenetic Correlation (Estimate +/- 95% HPD)") +
   ylim(0, 1) +
   coord_flip() + 
   theme_classic(base_size = 15)
-p3
+p3 + theme(axis.line.y = element_line(linetype = "blank"),
+           axis.text.y = element_text(angle = 45))
 
 #-------------------------- BLUPs analysis --------------------------#
 # Table of BLUPs (aka "ancestral states" in PGLMM)
@@ -385,16 +451,16 @@ cercs <- cercop_tree$tip.label
 
 df_bf_coefs$clade <- NULL
 df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% gr_ape,
-                            paste0("great_apes"),
+                            paste0("Hominidae"),
                             ifelse(df_bf_coefs$Species %in% l_ape,
-                                   paste0("lesser_apes"),
+                                   paste0("Hylobatidae"),
                             ifelse(df_bf_coefs$Species %in% papios,
-                            paste0("papionins"), 
+                            paste0("Papioini"), 
                             ifelse(df_bf_coefs$Species %in% platys,
-                                   paste0("platyrrhines"),
+                                   paste0("Platyrrhini"),
                             ifelse(df_bf_coefs$Species %in% colobs,
-                                   paste0("colobines"),
-                            paste0("guenons"))))))
+                                   paste0("Colobinae"),
+                            paste0("Cercopithecini"))))))
 
 ggplot(data = df_bf_coefs,
        aes(x = traitVTDwSD,
@@ -438,85 +504,85 @@ ggplot(data = df_bf_coefs,
 
 # Correlation between trait correlations and speciation rate
 cor_g_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "great_apes")])
+  df_bf_coefs$clade == "Hominidae")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Hominidae")])
 
 cor_l_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "lesser_apes")])
+  df_bf_coefs$clade == "Hylobatidae")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Hylobatidae")])
 
 cor_pap_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "papionins")])
+  df_bf_coefs$clade == "Papioini")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Papioini")])
 
 cor_plat_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "platyrrhines")])
+  df_bf_coefs$clade == "Platyrrhini")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Platyrrhini")])
 
 cor_colob_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "colobines")])
+  df_bf_coefs$clade == "Colobinae")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Colobinae")])
 
 cor_guen_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitVTDwSD[which(
-    df_bf_coefs$clade == "guenons")])
+  df_bf_coefs$clade == "Cercopithecini")], df_bf_coefs$traitVTDwSD[which(
+    df_bf_coefs$clade == "Cercopithecini")])
 # OS and SSD
 cor_g_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "great_apes")])
+  df_bf_coefs$clade == "Hominidae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Hominidae")])
 
 cor_l_ape_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "lesser_apes")])
+  df_bf_coefs$clade == "Hylobatidae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Hylobatidae")])
 
 cor_pap_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "papionins")])
+  df_bf_coefs$clade == "Papioini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Papioini")])
 
 cor_plat_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "platyrrhines")])
+  df_bf_coefs$clade == "Platyrrhini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Platyrrhini")])
 
 cor_colob_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "colobines")])
+  df_bf_coefs$clade == "Colobinae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Colobinae")])
 
 cor_guen_os_ssd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
-  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "guenons")])
+  df_bf_coefs$clade == "Cercopithecini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Cercopithecini")])
 
 # VTD and SSD
 cor_g_ape_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "great_apes")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "great_apes")])
+  df_bf_coefs$clade == "Hominidae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Hominidae")])
 
 cor_l_ape_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "lesser_apes")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "lesser_apes")])
+  df_bf_coefs$clade == "Hylobatidae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Hylobatidae")])
 
 cor_pap_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "papionins")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "papionins")])
+  df_bf_coefs$clade == "Papioini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Papioini")])
 
 cor_plat_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "platyrrhines")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "platyrrhines")])
+  df_bf_coefs$clade == "Platyrrhini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Platyrrhini")])
 
 cor_colob_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "colobines")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "colobines")])
+  df_bf_coefs$clade == "Colobinae")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Colobinae")])
 
 cor_guen_vtd_ssd <- cor.test(df_bf_coefs$traitVTDwSD[which(
-  df_bf_coefs$clade == "guenons")], df_bf_coefs$traitSSD[which(
-    df_bf_coefs$clade == "guenons")])
+  df_bf_coefs$clade == "Cercopithecini")], df_bf_coefs$traitSSD[which(
+    df_bf_coefs$clade == "Cercopithecini")])
 
 
-df_corrs <- data.frame("Clade" = c("Great_Apes",
-                                   "Lesser_Apes",
-                                   "Papionins",
-                                   "Platyrrhines",
-                                   "Colobines",
-                                   "Guenons"),
+df_corrs <- data.frame(Clade = c("Hominidae",
+                                 "Hylobatidae",
+                                 "Papioini",
+                                 "Platyrrhini",
+                                 "Colobinae",
+                                 "Cercopithecini"),
                        Corr_OSVTD = c(cor_g_ape_os_vtd$estimate,
                                       cor_l_ape_os_vtd$estimate,
                                       cor_pap_os_vtd$estimate,
@@ -597,7 +663,7 @@ ggplot(data = corr_rates_df,
        aes(x = Corr_OSSSD,
            y = Sp_Rate)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
+  geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSSSD,
@@ -610,7 +676,7 @@ ggplot(data = corr_rates_df,
        aes(x = Corr_VTDSSD,
            y = Sp_Rate)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
+  geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_VTDSSD,
@@ -684,7 +750,7 @@ rownames(pca_df) <- df_bf_coefs_divrates$Species
 # PCA analysis of blups and diversification rates
 res.pca <- prcomp(pca_df, scale = TRUE)
 
-fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 50))
+fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 55))
 
 # Variable contributions
 fviz_contrib(res.pca, choice = "var", axes = 1, top = 5)
@@ -706,6 +772,70 @@ fviz_pca_ind(res.pca,
                          "#0072B2", "#D55E00", "#CC79A7"),
              addEllipses = TRUE, # Concentration ellipses
              legend.title = "Groups") + 
+  theme_classic(base_size = 15)
+
+
+#-------------------- Canonical Correlation Analysis ----------------------#
+pca_df
+traits <- pca_df[, 1:3]
+rates <- pca_df[, 4:5]
+res_cc <- cancor(traits, rates)
+res_cc_2 <- cca(traits, rates)
+F.test.cca(res_cc_2)
+
+CC1_X <- as.matrix(traits) %*% res_cc$xcoef[, 1]
+CC1_Y <- as.matrix(rates) %*% res_cc$ycoef[, 1]
+CC2_X <- as.matrix(traits) %*% res_cc$xcoef[, 2]
+CC2_Y <- as.matrix(rates) %*% res_cc$ycoef[, 2]
+
+cca_df <- pca_df %>% 
+  mutate(CC1_X = CC1_X,
+         CC1_Y = CC1_Y,
+         CC2_X = CC2_X,
+         CC2_Y = CC2_Y)
+
+cca_df$Species <- rownames(cca_df)
+cca_df$clade <- NULL
+cca_df$clade <- ifelse(cca_df$Species %in% gr_ape,
+                            paste0("Hominidae"),
+                            ifelse(cca_df$Species %in% l_ape,
+                                   paste0("Hylobatidae"),
+                            ifelse(cca_df$Species %in% papios,
+                                   paste0("Papioini"), 
+                            ifelse(cca_df$Species %in% platys,
+                                   paste0("Platyrrhini"),
+                            ifelse(cca_df$Species %in% colobs,
+                                   paste0("Colobinae"),
+                                   paste0("Cercopithecini"))))))
+
+cca_df %>% 
+  ggplot(aes(x = CC1_X,
+             y = CC1_Y,
+             color = clade))+
+  geom_point() +
+  theme_classic(base_size = 15)
+
+cca_df %>% 
+  ggplot(aes(x = CC2_X,
+             y = CC2_Y,
+         color = clade))+
+  geom_point() +
+  theme_classic(base_size = 15)
+
+cca_df %>% 
+  ggplot(aes(x = clade,
+             y = CC1_X)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.15) +
+  theme(legend.position = "none") +
+  theme_classic(base_size = 15)
+
+cca_df %>% 
+  ggplot(aes(x = clade,
+             y = CC1_Y)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.15) +
+  theme(legend.position = "none") +
   theme_classic(base_size = 15)
 
 # Attempt to extract species MCMC samples for correlations

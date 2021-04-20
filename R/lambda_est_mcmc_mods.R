@@ -79,3 +79,68 @@ Mod2 <- MCMCglmm(cbind(log(VTDwSD + 1),
                  burnin = BURN,
                  thin = THIN)
 save(Mod2, file = "TrivMacro_Model_2levResp.Rdata")
+
+# Univariate models for each variable to calculate lambda
+PEprior2 <- list(R = list(V = diag(1), nu = 0.002),
+                 G = list(G1 = list(V = diag(1) * 0.02, 
+                                    nu = 1, 
+                                    alpha.mu = rep(0, 1), 
+                                    alpha.V = diag(1) * 1000)))
+
+set.seed(8675309) # Calls Jenny for a good time
+
+# Run parameters for posterior sample size of N = 2000
+nsamp <- 2000
+BURN <- 500000; THIN <- 1000; (NITT <- BURN + THIN*nsamp)
+
+Mod4 <- MCMCglmm(log(SSD) ~ 1,
+                 random = ~ Species,
+                 rcov = ~ units,
+                 ginverse = list(Species = Ainv_phylo), 
+                 family = "gaussian", 
+                 data = reduced_data,
+                 prior = PEprior2,
+                 pr = TRUE, 
+                 DIC = TRUE,
+                 nitt = NITT,
+                 burnin = BURN,
+                 thin = THIN)
+save(Mod4, file = "UniMacro_Model_SSD.Rdata")
+
+set.seed(8675309) # Calls Jenny for a good time
+Mod5 <- MCMCglmm(log(VTDwSD + 1) ~ 1,
+                 random = ~ Species,
+                 rcov = ~ units,
+                 ginverse = list(Species = Ainv_phylo), 
+                 family = "gaussian", 
+                 data = reduced_data,
+                 prior = PEprior2,
+                 pr = TRUE, 
+                 DIC = TRUE,
+                 nitt = NITT,
+                 burnin = BURN,
+                 thin = THIN)
+save(Mod5, file = "UniMacro_Model_VTD.Rdata")
+
+
+PEprior3 <- list(R = list(V = diag(1), fix = 1),
+                 G = list(G1 = list(V = diag(1) * 0.02, 
+                                    nu = 1, 
+                                    alpha.mu = rep(0, 1), 
+                                    alpha.V = diag(1) * 1000)))
+set.seed(8675309) # Calls Jenny for a good time
+Mod6 <- MCMCglmm(Ovulation_Signs ~ 1,
+                 random = ~ Species,
+                 rcov = ~ units,
+                 ginverse = list(Species = Ainv_phylo), 
+                 family = "threshold", 
+                 data = reduced_data,
+                 prior = PEprior3,
+                 pr = TRUE,
+                 pl = TRUE,
+                 trunc = TRUE,
+                 DIC = TRUE,
+                 nitt = NITT,
+                 burnin = BURN,
+                 thin = THIN)
+save(Mod6, file = "UniMacro_Model_OvSign.Rdata")

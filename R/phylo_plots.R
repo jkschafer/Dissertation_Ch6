@@ -17,7 +17,7 @@ nodelabels(cex = 0.5)
 p <- ggtree(tree) + 
         theme_tree2() +
         geom_cladelabel(node = 104, 
-                        label = "cercopithecini",
+                        label = "Cercopithecini",
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -26,7 +26,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 115, 
-                        label = "papioini", 
+                        label = "Papioini", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -35,7 +35,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 139, 
-                        label = "colobinae", 
+                        label = "Colobinae", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -44,7 +44,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 154, 
-                        label = "hylobatidae", 
+                        label = "Hylobatidae", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -53,7 +53,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 164, 
-                        label = "hominidae", 
+                        label = "Hominidae", 
                         #align = TRUE, 
                         angle = 270,
                         offset = 2,
@@ -62,7 +62,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 172, 
-                        label = "atelidae", 
+                        label = "Atelidae", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -71,7 +71,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 180, 
-                        label = "callitrichidae", 
+                        label = "Callitrichidae", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,
@@ -80,7 +80,7 @@ p <- ggtree(tree) +
                         fontsize = 3.5,
                         color = "#000000") +
         geom_cladelabel(node = 194, 
-                        label = "cebidae", 
+                        label = "Cebidae", 
                         #align = TRUE, 
                         angle = 270,
                         hjust = 0.5,

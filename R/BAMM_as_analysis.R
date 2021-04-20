@@ -132,12 +132,12 @@ plotRateThroughTime(edata, node = 426,
                     nodetype="include")
 
 # Table of speciation rates and 95%CI
-clade_rates <- data.frame(Clade = c("Great_Apes",
-                                    "Lesser_Apes",
-                                    "Papionins",
-                                    "Platyrrhines",
-                                    "Colobines",
-                                    "Guenons"),
+clade_rates <- data.frame(Clade = c("Hominidae",
+                                    "Hylobatidae",
+                                    "Papioini",
+                                    "Platyrrhini",
+                                    "Colobinae",
+                                    "Cercopithecini"),
                           Sp_Rate = c(mean(homini_rates$lambda),
                                       mean(hylob_rates$lambda),
                                       mean(papio_rates$lambda),
@@ -175,6 +175,8 @@ clade_rates <- data.frame(Clade = c("Great_Apes",
                                         quantile(colob_rates$mu, c(0.95)),
                                         quantile(cerci_rates$mu, c(0.95))))
 save(clade_rates, file = "clade_rates_as.Rdata")
+# Table for Appendix
+stargazer(clade_rates, type = "latex", summary = F)
 
 # Cohort matrix
 cmat <- getCohortMatrix(edata)
@@ -184,7 +186,9 @@ cohorts(cmat, edata)
 tip_rates <- data.frame(Species = c(tree$tip.label),
                         SpRate = c(edata$meanTipLambda),
                         ExRate = c(edata$meanTipMu))
-save(tip_rates, file = "tip_rates.Rdata")
+save(tip_rates, file = "tip_rates_as.Rdata")
+# Table for Appendix
+stargazer(tip_rates, type = "latex", summary = F)
 
 full_tip_data <- getTipRates(edata)
 
