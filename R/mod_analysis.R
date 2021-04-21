@@ -8,7 +8,8 @@ list_of_packages <- c("tidyverse", "ape",
                       "MCMCglmm", "phytools",
                       "ggpmisc", "ggpubr",
                       "broom.mixed", "reshape2",
-                      "factoextra", "corrplot")
+                      "factoextra", "corrplot",
+                      "CCA", "yacca", "CCP")
 lapply(list_of_packages, library, character.only = TRUE)
 
 # load function for phylogenetic correlation
@@ -648,7 +649,8 @@ corr_rates_df <- merge(x = df_corrs,
 
 ggplot(data = corr_rates_df,
        aes(x = Corr_OSVTD,
-           y = Sp_Rate)) + 
+           y = Sp_Rate,
+           color = Clade)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
@@ -838,6 +840,12 @@ cca_df %>%
   theme(legend.position = "none") +
   theme_classic(base_size = 15)
 
+comput(traits, rates, res_cc_3)
+rho <- res_cc_3$cor
+n <- dim(traits)[1]
+p <- length(traits)
+q <- length(rates)
+p.asym(rho, n, p, q, tstat = "Wilks")
 # Attempt to extract species MCMC samples for correlations
 # instead of correlation of blup means
 dftest <- Mod3$Sol[, grep(pattern = "Species*", 
