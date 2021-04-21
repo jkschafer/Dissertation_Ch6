@@ -1,3 +1,10 @@
+list_of_packages <- c("tidyverse", "ggtree", 
+                      "ape", "phytools",
+                      "ggpmisc", "ggpubr",
+                      "ggstance", "rcartocolor")
+lapply(list_of_packages, library, character.only = TRUE)
+
+
 library(ggtree)
 library(ggstance)
 library(ape)
@@ -107,25 +114,37 @@ p2 <- facet_plot(p1, panel = 'log(SSD)',
                                fill = as.factor(category2)),
                  stat = 'identity') +
         theme_tree2()
-p2
+p2 + theme(strip.text.x = element_text(colour = "black", 
+                                       face = "bold", 
+                                       size = 15))
 
 df$category2 <- factor(df$category2, 
                        levels = c("absent", 
                                   "absent/slight", 
                                   "slight",
                                   "present"))
+
+# Color palette for plot
+mycolors <- rcartocolor::carto_pal(4, "Earth")
+# Reverse first two colors of palette manually
+mycolors <- c("#d6bd8d", "#A16928",
+              "#b5c8b8", "#2887a1")
+# Final plot
 p3 <- facet_plot(p2, panel = 'log(VTD + 1)', 
                  data = df, 
                  geom = geom_barh,
                  mapping = aes(x = VTD, 
                                fill = as.factor(category2)),
                  stat = 'identity') +
-        scale_fill_manual(values = c("#000000", "#999999", 
-                                     "#D55E00", "#0072B2"),
+        scale_fill_manual(values = mycolors,
                           limits = c("absent", 
                                      "absent/slight", 
                                      "slight",
                                      "present"),
                           name = "Ovulation Signal") +
         theme_tree2(legend.position = c(0.05, 0.90)) 
-p3
+p3 + theme(strip.text.x = element_text(colour = "black", 
+                                     face = "bold", 
+                                     size = 12),
+           legend.text = element_text(size = 12),
+           legend.title = element_text(size = 12))
