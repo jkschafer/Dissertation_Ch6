@@ -9,7 +9,8 @@ list_of_packages <- c("tidyverse", "ape",
                       "ggpmisc", "ggpubr",
                       "broom.mixed", "reshape2",
                       "factoextra", "corrplot",
-                      "CCA", "yacca", "CCP")
+                      "CCA", "yacca", "CCP",
+                      "stargazer", "GGally")
 lapply(list_of_packages, library, character.only = TRUE)
 
 # load function for phylogenetic correlation
@@ -347,14 +348,14 @@ p3 + theme(axis.line.y = element_line(linetype = "blank"),
 # Table of BLUPs (aka "ancestral states" in PGLMM)
 df_bf_coefs <- tibble(Trait = attr(colMeans(Mod3$Sol), "names"), 
                       Value = colMeans(Mod3$Sol)) %>%
-  separate(Trait, c("Trait","Type","Species"), 
-           sep = "\\.", fill = "right") %>% 
-  filter(Type == "Species") %>%
-  filter(Trait %in% c("traitVTDwSD", 
-                      "traitSSD", 
-                      "traitOvulation_Signs")) %>% 
-  select(-Type) %>%
-  spread(Trait, Value)
+  tidyr::separate(Trait, c("Trait","Type","Species"), 
+                  sep = "\\.", fill = "right") %>% 
+  dplyr::filter(Type == "Species") %>%
+  dplyr::filter(Trait %in% c("traitVTDwSD", 
+                             "traitSSD", 
+                             "traitOvulation_Signs")) %>% 
+  dplyr::select(-Type) %>%
+  tidyr::spread(Trait, Value)
 
 # Table of BLUPs with HPD intervals for estimates
 df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod3$Sol), "names"), 
@@ -744,7 +745,7 @@ df_bf_coefs_divrates <- merge(df_bf_coefs, tip_rates,
                               by.y = "Species")
 
 pca_df <- df_bf_coefs_divrates %>%
-  select(traitOvulation_Signs,
+  dplyr::select(traitOvulation_Signs,
          traitSSD, traitVTDwSD, 
          SpRate, ExRate)
 rownames(pca_df) <- df_bf_coefs_divrates$Species
@@ -783,6 +784,7 @@ traits <- pca_df[, 1:3]
 rates <- pca_df[, 4:5]
 res_cc <- cancor(traits, rates)
 res_cc_2 <- cca(traits, rates)
+res_cc_3 <- cc(traits, rates)
 F.test.cca(res_cc_2)
 
 CC1_X <- as.matrix(traits) %*% res_cc$xcoef[, 1]
@@ -795,6 +797,16 @@ cca_df <- pca_df %>%
          CC1_Y = CC1_Y,
          CC2_X = CC2_X,
          CC2_Y = CC2_Y)
+
+# Plotting raw correlation matrices
+ggpairs(cca_df, columns = 1:3, # trait blups
+        ggplot2::aes(colour = clade)) + 
+  theme_classic(base_size = 15)
+
+ggpairs(cca_df, columns = 4:5, # diversification rates
+        ggplot2::aes(colour = clade)) + 
+  theme_classic(base_size = 15)
+
 
 cca_df$Species <- rownames(cca_df)
 cca_df$clade <- NULL
@@ -846,6 +858,10 @@ n <- dim(traits)[1]
 p <- length(traits)
 q <- length(rates)
 p.asym(rho, n, p, q, tstat = "Wilks")
+p.asym(rho, n, p, q, tstat = "Hotelling")
+p.asym(rho, n, p, q, tstat = "Pillai")
+p.asym(rho, n, p, q, tstat = "Roy")
+
 # Attempt to extract species MCMC samples for correlations
 # instead of correlation of blup means
 dftest <- Mod3$Sol[, grep(pattern = "Species*", 
