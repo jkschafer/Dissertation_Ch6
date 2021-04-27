@@ -266,6 +266,51 @@ p1 <- ggplot(mod1dens_melted,
 p1 + theme(legend.position = c(0.2, 0.9),
           legend.direction = "vertical",
           legend.background = element_rect(fill = "darkgray"))
+# Plot for combined figure
+p1 <- p1 + theme(legend.position = "none")
+
+# 2 level OS sign with lambda estimated
+m2_post_cor_vtd_os <- m2_vcv$vtd_os/
+  sqrt(m1_vcv$os * m2_vcv$vtd)
+
+m2_post_cor_ssd_os <- m2_vcv$ssd_os/
+  sqrt(m2_vcv$os * m2_vcv$ssd)
+
+m2_post_cor_ssd_vtd <- m2_vcv$vtd_ssd/
+  sqrt(m2_vcv$vtd * m2_vcv$ssd)
+
+mod2dens <- data.frame(OS_VTD = c(m2_post_cor_vtd_os),
+                       OS_SSD = c(m2_post_cor_ssd_os),
+                       SSD_VTD = c(m2_post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod2dens_melted <- melt(mod2dens)
+
+# Phylogenetic model plot
+p1.1 <- ggplot(mod2dens_melted, 
+               aes(x = value, 
+                   fill = variable)) + 
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-1, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_manual(name = "Phylogenetic Correlation",
+                    labels = c("Ovulation Signs & VTD", 
+                               "Ovulation Signs & SSD", 
+                               "VTD & SSD"),
+                    values = c("#D55E00", 
+                               "#0072B2", 
+                               "#009E73")) +
+  theme_classic(base_size = 15)
+p1.1 + theme(legend.position = c(0.2, 0.9),
+             legend.direction = "vertical",
+             legend.background = element_rect(fill = "darkgray"))
+# Plot for combined figure
+p1.1 <- p1.1 + theme(legend.position = "none")
+
 
 # 4 level OS sign with lambda fixed
 m3_post_cor_vtd_os <- m3_vcv$vtd_os/
@@ -303,10 +348,18 @@ p2 <- ggplot(mod3dens_melted,
                                "#0072B2", 
                                "#009E73")) +
   theme_classic(base_size = 15)
-p2 + theme(legend.position = c(0.3, 0.9),
-           legend.direction = "vertical",
-           legend.background = element_rect(fill = "darkgray"))
+p2 <- p2 + theme(legend.position = c(0.3, 0.8),
+                 legend.direction = "vertical",
+                 legend.background = element_rect(fill = "darkgray"))
 
+# Combining plots in one figure
+ggarrange(p2,                                                 
+          ggarrange(p1, p1.1, 
+                    ncol = 2, 
+                    labels = c("B", "C")), 
+          nrow = 2, 
+          labels = "A"                                        
+)
 #--------------------------------------------------------------------#
 #    Different plots for visualizing magnitude of correlations       #
 #--------------------------------------------------------------------#
