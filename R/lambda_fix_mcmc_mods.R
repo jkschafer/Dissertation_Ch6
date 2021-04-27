@@ -53,3 +53,24 @@ Mod3 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1),
                               burnin = BURN,
                               thin = THIN)
 save(Mod3, file = "TrivMacro_Model_Reduced_4levResp.Rdata")
+
+set.seed(8675309) # Calls Jenny for a good time
+Mod7 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), 
+                                    log(SSD), 
+                                    Ovulation_Signs_bin) ~ 
+                                trait - 1,
+                              random = ~ us(trait):Species, 
+                              rcov = ~ us(trait):units, 
+                              pedigree = tree, 
+                              family = c("gaussian", 
+                                         "gaussian", 
+                                         "threshold"), 
+                              data = reduced_data,
+                              prior = PEprior_Reduced,
+                              pr = TRUE, 
+                              pl = TRUE,
+                              reduced = TRUE,
+                              nitt = NITT,
+                              burnin = BURN,
+                              thin = THIN)
+save(Mod7, file = "BivMacro_Model_Reduced_2levResp.Rdata")
