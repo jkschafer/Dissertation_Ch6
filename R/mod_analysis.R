@@ -517,10 +517,10 @@ df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% gr_ape,
                                    paste0("Colobinae"),
                             paste0("Cercopithecini"))))))
 
-ggplot(data = df_bf_coefs,
-       aes(x = traitVTDwSD,
-           y = traitOvulation_Signs,
-           color = clade)) +
+p8 <- ggplot(data = df_bf_coefs,
+             aes(x = traitVTDwSD,
+             y = traitOvulation_Signs,
+             color = clade)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) + 
   geom_abline(intercept = 0, 
@@ -529,24 +529,26 @@ ggplot(data = df_bf_coefs,
   labs(y = "Ovulation Signals (BLUP)",
        x = "VTD (BLUP)") +
   theme_classic(base_size = 15)
+p8 <- p8 + theme(legend.position = "none")
 
-ggplot(data = df_bf_coefs,
-       aes(x = traitSSD,
-           y = traitOvulation_Signs,
-           color = clade)) +
+p9 <- ggplot(data = df_bf_coefs,
+             aes(x = traitSSD,
+             y = traitOvulation_Signs,
+             color = clade)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) + 
   geom_abline(intercept = 0, 
               slope = mean(os_ssd_slope),
               size = 1) +
-  labs(y = "Ovulation Signals (BLUP)",
+  labs(y = "",
        x = "SSD (BLUP)") +
   theme_classic(base_size = 15)
+p9 <- p9 + theme(legend.position = "none")
 
-ggplot(data = df_bf_coefs,
-       aes(x = traitSSD,
-           y = traitVTDwSD,
-           color = clade)) +
+p10 <- ggplot(data = df_bf_coefs,
+              aes(x = traitSSD,
+              y = traitVTDwSD,
+              color = clade)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) + 
   geom_abline(intercept = 0, 
@@ -556,6 +558,16 @@ ggplot(data = df_bf_coefs,
        x = "SSD (BLUP)") +
   theme_classic(base_size = 15)
 
+# Combining plots in one window
+ggarrange(p10,                                                 
+          ggarrange(p8, p9, 
+                    ncol = 2, 
+                    labels = c("B", "C")), 
+          nrow = 2, 
+          labels = "A",
+          common.legend = TRUE,
+          legend = "bottom"
+)
 
 # Correlation between trait correlations and speciation rate
 cor_g_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
