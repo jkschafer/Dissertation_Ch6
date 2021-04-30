@@ -713,90 +713,95 @@ corr_rates_df <- merge(x = df_corrs,
                        y = clade_rates, 
                        by = "Clade")
 
-ggplot(data = corr_rates_df,
+pltA <- ggplot(data = corr_rates_df,
        aes(x = Corr_OSVTD,
            y = Sp_Rate,
            color = Clade)) + 
-  geom_point() + 
-  geom_smooth(method = "lm", se = F) +
+  geom_point() +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSVTD,
                      xmax = UCI_Corr_OSVTD)) +
   labs(y = "Speciation Rate +/- 95% CI",
-       x = "Ovulation Signal-VTD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+       x = "") +
+  theme_classic(base_size = 12)
 
-ggplot(data = corr_rates_df,
+pltB <- ggplot(data = corr_rates_df,
        aes(x = Corr_OSSSD,
-           y = Sp_Rate)) + 
+           y = Sp_Rate,
+           color = Clade)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSSSD,
                      xmax = UCI_Corr_OSSSD)) +
-  labs(y = "Speciation Rate +/- 95% CI",
-       x = "Ovulation Signal-SSD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+  labs(y = "",
+       x = "") +
+  theme_classic(base_size = 12)
 
-ggplot(data = corr_rates_df,
+pltC <- ggplot(data = corr_rates_df,
        aes(x = Corr_VTDSSD,
-           y = Sp_Rate)) + 
+           y = Sp_Rate,
+           color = Clade)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = F) +
   geom_errorbar(aes(ymin = L_Sp_Rate,
                     ymax = U_Sp_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_VTDSSD,
                      xmax = UCI_Corr_VTDSSD)) +
-  labs(y = "Speciation Rate +/- 95% CI",
-       x = "VTD-SSD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+  labs(y = "",
+       x = "") +
+  theme_classic(base_size = 12)
 
 # Extinction rates
-ggplot(data = corr_rates_df,
+pltD <- ggplot(data = corr_rates_df,
        aes(x = Corr_OSVTD,
-           y = Ex_Rate)) + 
+           y = Ex_Rate,
+           color = Clade)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
   geom_errorbar(aes(ymin = L_Ex_Rate,
                     ymax = U_Ex_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSVTD,
                      xmax = UCI_Corr_OSVTD)) +
   labs(y = "Extinction Rate +/- 95% CI",
        x = "Ovulation Signal-VTD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+  theme_classic(base_size = 12)
 
-ggplot(data = corr_rates_df,
+pltE <- ggplot(data = corr_rates_df,
        aes(x = Corr_OSSSD,
-           y = Ex_Rate)) + 
+           y = Ex_Rate,
+           color = Clade)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
   geom_errorbar(aes(ymin = L_Ex_Rate,
                     ymax = U_Ex_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_OSSSD,
                      xmax = UCI_Corr_OSSSD)) +
-  labs(y = "Extinction Rate +/- 95% CI",
+  labs(y = "",
        x = "Ovulation Signal-SSD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+  theme_classic(base_size = 12)
 
-ggplot(data = corr_rates_df,
+pltF <- ggplot(data = corr_rates_df,
        aes(x = Corr_VTDSSD,
-           y = Ex_Rate)) + 
+           y = Ex_Rate,
+           color = Clade)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = T) +
   geom_errorbar(aes(ymin = L_Ex_Rate,
                     ymax = U_Ex_Rate)) + 
   geom_errorbarh(aes(xmin = LCI_Corr_VTDSSD,
                      xmax = UCI_Corr_VTDSSD)) +
-  labs(y = "Extinction Rate +/- 95% CI",
+  labs(y = "",
        x = "VTD-SSD Correlation +/- 95% CI") +
-  theme_classic(base_size = 15)
+  theme_classic(base_size = 12)
 
-
+ggarrange(pltA, pltB, pltC,
+          pltD, pltE, pltF,
+          labels = c("A", "B", "C",
+                     "D", "E", "F"),
+          ncol = 3, nrow = 2,
+          common.legend = TRUE,
+          legend = "bottom")
 
 #---------- Species specific rates -----------------#
-load("./Results/Data/tip_rates_ah.Rdata")
+load("./Results/Data/tip_rates_as.Rdata")
 
 not_in_spdat <- tip_rates[!tip_rates$Species %in% 
                       df_bf_coefs$Species,]
@@ -809,123 +814,110 @@ df_bf_coefs_divrates <- merge(df_bf_coefs, tip_rates,
                               by.x = "Species",
                               by.y = "Species")
 
-pca_df <- df_bf_coefs_divrates %>%
+post_df <- df_bf_coefs_divrates %>%
   dplyr::select(traitOvulation_Signs,
          traitSSD, traitVTDwSD, 
          SpRate, ExRate)
-rownames(pca_df) <- df_bf_coefs_divrates$Species
-
-# PCA analysis of blups and diversification rates
-res.pca <- prcomp(pca_df, scale = TRUE)
-
-fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 55))
-
-# Variable contributions
-fviz_contrib(res.pca, choice = "var", axes = 1, top = 5)
-fviz_contrib(res.pca, choice = "var", axes = 2, top = 5)
-fviz_contrib(res.pca, choice = "var", axes = 3, top = 5)
-fviz_contrib(res.pca, choice = "var", axes = 4, top = 5)
-fviz_contrib(res.pca, choice = "var", axes = 5, top = 5)
-
-# Individual contributions
-fviz_contrib(res.pca, choice = "ind", axes = 1:2)
-
-# Correlation plot
-corrplot(res.pca$x, is.corr=FALSE)
-
-fviz_pca_ind(res.pca,
-             geom.ind = "point", # show points only (nbut not "text")
-             col.ind = factor(df_bf_coefs_divrates$clade), # color by groups
-             palette = c("#56B4E9", "#009E73", "#F0E442", 
-                         "#0072B2", "#D55E00", "#CC79A7"),
-             addEllipses = TRUE, # Concentration ellipses
-             legend.title = "Groups") + 
-  theme_classic(base_size = 15)
+rownames(post_df) <- df_bf_coefs_divrates$Species
 
 
-#-------------------- Canonical Correlation Analysis ----------------------#
-pca_df
-traits <- pca_df[, 1:3]
-rates <- pca_df[, 4:5]
-res_cc <- cancor(traits, rates)
-res_cc_2 <- cca(traits, rates)
-res_cc_3 <- cc(traits, rates)
-F.test.cca(res_cc_2)
+#-------------------- Rates-Traits Analysis ----------------------#
+post_df$Species <- rownames(post_df)
+post_df$clade <- NULL
+post_df$clade <- ifelse(post_df$Species %in% gr_ape,
+                       paste0("Hominidae"),
+                       ifelse(post_df$Species %in% l_ape,
+                              paste0("Hylobatidae"),
+                      ifelse(post_df$Species %in% papios,
+                             paste0("Papioini"), 
+                      ifelse(post_df$Species %in% platys,
+                             paste0("Platyrrhini"),
+                      ifelse(post_df$Species %in% colobs,
+                             paste0("Colobinae"),
+                             paste0("Cercopithecini"))))))
 
-CC1_X <- as.matrix(traits) %*% res_cc$xcoef[, 1]
-CC1_Y <- as.matrix(rates) %*% res_cc$ycoef[, 1]
-CC2_X <- as.matrix(traits) %*% res_cc$xcoef[, 2]
-CC2_Y <- as.matrix(rates) %*% res_cc$ycoef[, 2]
-
-cca_df <- pca_df %>% 
-  mutate(CC1_X = CC1_X,
-         CC1_Y = CC1_Y,
-         CC2_X = CC2_X,
-         CC2_Y = CC2_Y)
 
 # Plotting raw correlation matrices
-ggpairs(cca_df, columns = 1:3, # trait blups
+ggpairs(post_df, columns = 1:3, # trait blups
         ggplot2::aes(colour = clade)) + 
   theme_classic(base_size = 15)
 
-ggpairs(cca_df, columns = 4:5, # diversification rates
+ggpairs(post_df, columns = 4:5, # diversification rates
         ggplot2::aes(colour = clade)) + 
   theme_classic(base_size = 15)
 
 
-cca_df$Species <- rownames(cca_df)
-cca_df$clade <- NULL
-cca_df$clade <- ifelse(cca_df$Species %in% gr_ape,
-                            paste0("Hominidae"),
-                            ifelse(cca_df$Species %in% l_ape,
-                                   paste0("Hylobatidae"),
-                            ifelse(cca_df$Species %in% papios,
-                                   paste0("Papioini"), 
-                            ifelse(cca_df$Species %in% platys,
-                                   paste0("Platyrrhini"),
-                            ifelse(cca_df$Species %in% colobs,
-                                   paste0("Colobinae"),
-                                   paste0("Cercopithecini"))))))
+nsamp <- 1000
+THIN <- 100
+BURN <- 10000
+NITT <- BURN + (THIN*nsamp)
+set.seed(8675309)
+post_mod <- MCMCglmm(cbind(SpRate, ExRate) ~ trait - 1 +
+                       trait:traitOvulation_Signs + 
+                       trait:traitSSD + 
+                       trait:traitVTDwSD,
+                     rcov = ~ us(trait):units,
+                     family = rep("gaussian", 2),
+                     data = post_df,
+                     nitt = NITT,
+                     burnin = BURN,
+                     thin = THIN)
+plot(post_mod)
+summary(post_mod)
+# See https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025070.html
+# for explanation of why this must be done for predict.MCMCglmm to work
+post_mod$Residual$family <- rep("gaussian", nrow(post_mod$X))
 
-cca_df %>% 
-  ggplot(aes(x = CC1_X,
-             y = CC1_Y,
-             color = clade))+
-  geom_point() +
+# Eq. 6 and 7 in De Villermereuil et al 2018
+vf_post_mod <- sapply(1:nrow(post_mod[["Sol"]]), function(i) {
+  var(predict.MCMCglmm(post_mod, it = i))			
+})
+
+vf_post_mod <- as.mcmc(vf_post_mod)
+posterior.mode(vf_post_mod)
+HPDinterval(vf_post_mod)
+
+r2 <- vf_post_mod/
+  (vf_post_mod +
+     post_mod$VCV[, "traitSpRate:traitSpRate.units"] +
+     post_mod$VCV[, "traitSpRate:traitExRate.units"])
+posterior.mode(r2); HPDinterval(r2)
+  
+post_mod_Res <- tidy(post_mod, 
+                 effects = c("fixed", "ran_pars"),
+                 conf.int = TRUE, 
+                 conf.method = "HPDinterval",
+                 conf.level = 0.95)
+
+post_mod_Res_slopes <- post_mod_Res[3:8,] 
+post_mod_Res_slopes$Rates <- c("Speciation", "Extinction",
+                               "Speciation", "Extinction",
+                               "Speciation", "Extinction") 
+post_mod_Res_slopes$term <- c("Ovulation_Signs", "Ovulation_Signs",
+                              "SSD", "SSD",
+                              "VTD", "VTD")
+
+post_mod_plt <- ggplot(post_mod_Res_slopes, 
+                 aes(x = term, 
+                     y = estimate,
+                     color = Rates)) + 
+  geom_pointrange(aes(ymin = conf.low,
+                      ymax = conf.high),
+                      position = position_dodge(width = 0.5)) + 
+  geom_hline(yintercept = 0, 
+             linetype = "dashed",
+             alpha = 1) +
+  scale_x_discrete(limits = c("Ovulation_Signs",
+                              "VTD",
+                              "SSD"),
+                   labels = c("Ovulation Signs",
+                              "VTD",
+                              "SSD")) +
+  labs(x = "",
+       y = "Estimate +/- 95% HPD") +
+  coord_flip() + 
   theme_classic(base_size = 15)
-
-cca_df %>% 
-  ggplot(aes(x = CC2_X,
-             y = CC2_Y,
-         color = clade))+
-  geom_point() +
-  theme_classic(base_size = 15)
-
-cca_df %>% 
-  ggplot(aes(x = clade,
-             y = CC1_X)) +
-  geom_boxplot(width = 0.5) +
-  geom_jitter(width = 0.15) +
-  theme(legend.position = "none") +
-  theme_classic(base_size = 15)
-
-cca_df %>% 
-  ggplot(aes(x = clade,
-             y = CC1_Y)) +
-  geom_boxplot(width = 0.5) +
-  geom_jitter(width = 0.15) +
-  theme(legend.position = "none") +
-  theme_classic(base_size = 15)
-
-comput(traits, rates, res_cc_3)
-rho <- res_cc_3$cor
-n <- dim(traits)[1]
-p <- length(traits)
-q <- length(rates)
-p.asym(rho, n, p, q, tstat = "Wilks")
-p.asym(rho, n, p, q, tstat = "Hotelling")
-p.asym(rho, n, p, q, tstat = "Pillai")
-p.asym(rho, n, p, q, tstat = "Roy")
+post_mod_plt + theme(axis.text.y = element_text(angle = 45))
 
 # Attempt to extract species MCMC samples for correlations
 # instead of correlation of blup means
