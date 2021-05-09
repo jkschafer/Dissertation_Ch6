@@ -87,16 +87,17 @@ PEprior2 <- list(R = list(V = diag(1), nu = 0.002),
                                     alpha.mu = rep(0, 1), 
                                     alpha.V = diag(1) * 1000)))
 
-set.seed(8675309) # Calls Jenny for a good time
 
 # Run parameters for posterior sample size of N = 2000
+reduced_data$animal <- reduced_data$Species
 nsamp <- 2000
 BURN <- 500000; THIN <- 1000; (NITT <- BURN + THIN*nsamp)
 
+set.seed(8675309) # Calls Jenny for a good time
 Mod4 <- MCMCglmm(log(SSD) ~ 1,
-                 random = ~ Species,
+                 random = ~ animal,
                  rcov = ~ units,
-                 ginverse = list(Species = Ainv_phylo), 
+                 pedigree = tree, 
                  family = "gaussian", 
                  data = reduced_data,
                  prior = PEprior2,
@@ -109,9 +110,9 @@ save(Mod4, file = "UniMacro_Model_SSD.Rdata")
 
 set.seed(8675309) # Calls Jenny for a good time
 Mod5 <- MCMCglmm(log(VTDwSD + 1) ~ 1,
-                 random = ~ Species,
+                 random = ~ animal,
                  rcov = ~ units,
-                 ginverse = list(Species = Ainv_phylo), 
+                 pedigree = tree, 
                  family = "gaussian", 
                  data = reduced_data,
                  prior = PEprior2,
@@ -130,9 +131,9 @@ PEprior3 <- list(R = list(V = diag(1), fix = 1),
                                     alpha.V = diag(1) * 1000)))
 set.seed(8675309) # Calls Jenny for a good time
 Mod6 <- MCMCglmm(Ovulation_Signs ~ 1,
-                 random = ~ Species,
+                 random = ~ animal,
                  rcov = ~ units,
-                 ginverse = list(Species = Ainv_phylo), 
+                 pedigree = tree, 
                  family = "threshold", 
                  data = reduced_data,
                  prior = PEprior3,
@@ -144,3 +145,31 @@ Mod6 <- MCMCglmm(Ovulation_Signs ~ 1,
                  burnin = BURN,
                  thin = THIN)
 save(Mod6, file = "UniMacro_Model_OvSign.Rdata")
+
+
+vtd <- log(reduced_data$VTDwSD + 1)
+names(vtd) <- reduced_data$Species
+sig_lamb_vtd <- phylosig(tree, vtd, 
+                         method = "lambda", 
+                         test = TRUE)
+sig_lamb_vtd
+
+sig_k_vtd <- phylosig(tree, vtd, 
+                      method = "K", 
+                      test = TRUE, 
+                      nsim = 10000)
+sig_k_vtd
+
+ssd <- log(reduced_data$SSD)
+names(ssd) <- reduced_data$Species
+sig_lamb_ssd <- phylosig(tree, ssd, 
+                         method = "lambda", 
+                         test = TRUE)
+sig_lamb_ssd
+
+sig_k_ssd <- phylosig(tree, ssd, 
+                      method = "K", 
+                      test = TRUE, 
+                      nsim = 10000)
+sig_k_ssd
+

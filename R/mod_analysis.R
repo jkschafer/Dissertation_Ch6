@@ -32,24 +32,24 @@ load("./Results/Data/UniMacro_Model_SSD.Rdata")
 #    Calculating Pagel's lambda from univariate analyses
 #--------------------------------------------------------------# 
 # Ovulation signals
-OvSign_lambda <- Mod6$VCV[, "Species"]/
-  (Mod6$VCV[, "Species"] + 
+OvSign_lambda <- Mod6$VCV[, "animal"]/
+  (Mod6$VCV[, "animal"] + 
      Mod6$VCV[, "units"])
 mean(OvSign_lambda) 
 HPDinterval(OvSign_lambda) 
 plot(OvSign_lambda)
 
 # VTD
-VTD_lambda <- Mod5$VCV[, "Species"]/
-  (Mod5$VCV[, "Species"] + 
+VTD_lambda <- Mod5$VCV[, "animal"]/
+  (Mod5$VCV[, "animal"] + 
      Mod5$VCV[, "units"])
 mean(VTD_lambda) 
 HPDinterval(VTD_lambda) 
 plot(VTD_lambda)
 
 # SSD
-SSD_lambda <- Mod4$VCV[, "Species"]/
-  (Mod4$VCV[, "Species"] + 
+SSD_lambda <- Mod4$VCV[, "animal"]/
+  (Mod4$VCV[, "animal"] + 
      Mod4$VCV[, "units"])
 mean(SSD_lambda) 
 HPDinterval(SSD_lambda) 
@@ -74,9 +74,9 @@ p_lamb <- ggplot(lambda_tbl,
                  y = Lambda)) + 
   geom_pointrange(aes(ymin = Lower,
                       ymax = Upper)) + 
-  geom_hline(yintercept = 0, 
-             linetype = "solid",
-             alpha = 1) +
+ # geom_hline(yintercept = 1, 
+ #            linetype = "solid",
+ #            alpha = 1) +
   scale_x_discrete(limits = c("Ovulation_Signs",
                               "VTD",
                               "SSD"),
@@ -85,11 +85,47 @@ p_lamb <- ggplot(lambda_tbl,
                               "SSD")) +
   labs(x = "",
        y = expression("Pagel's" ~ lambda ~ "+/- 95% HPD")) +
-  ylim(0, 1) +
+  ylim(0.75, 1.01) +
   coord_flip() + 
   theme_classic(base_size = 15)
-p_lamb + theme(axis.line.y = element_line(linetype = "blank"),
-               axis.text.y = element_text(angle = 45))
+p_lamb + theme(axis.text.y = element_text(angle = 45))
+
+# Prep data for violin plot
+lambda_dens <- data.frame(Ovulation_Signs = c(OvSign_lambda),
+                          SSD = c(SSD_lambda),
+                          VTD = c(VTD_lambda))
+lambda_dens_melted <- melt(lambda_dens)
+
+# Violin plot with posterior density
+lambda_plt_vio <- ggplot(lambda_dens_melted,
+                         aes(y = value, 
+                             x = variable)) +
+  geom_violin(size = 1) +
+  geom_point(data = lambda_tbl,
+             aes(x = Trait, y = Lambda),
+             size = 4) +
+  geom_errorbar(data = lambda_tbl, 
+                  aes(x = Trait, y = Lambda, 
+                      ymin = Lower,
+                      ymax = Upper),
+                position = position_nudge(x = 0), 
+                width = 0.4, size = 1,
+                color = "#E69F00") +
+  scale_x_discrete(limits = c("Ovulation_Signs",
+                              "VTD",
+                              "SSD"),
+                   labels = c("Ovulation Signs",
+                              "VTD",
+                              "SSD")) +
+  labs(x = "",
+       y = expression("Pagel's" ~ lambda ~ "+/- 95% HPD")) +
+  #ylim(0.55, 1.1) +
+  coord_flip() +
+  theme_classic(base_size = 15)
+lambda_plt_vio
+lambda_plt_vio + theme(axis.text.y = element_text(angle = 45))
+
+
 #------ Diagnostics to check posteriors-------#
 # Model with 4 level Ovulation signs
 summary(Mod1)
@@ -360,6 +396,8 @@ ggarrange(p2,
           nrow = 2, 
           labels = "A"                                        
 )
+
+
 #--------------------------------------------------------------------#
 #    Different plots for visualizing magnitude of correlations       #
 #--------------------------------------------------------------------#
@@ -396,6 +434,51 @@ p3 <- ggplot(m3_corr_tbl,
   theme_classic(base_size = 15)
 p3 + theme(axis.line.y = element_line(linetype = "blank"),
            axis.text.y = element_text(angle = 45))
+
+# Violin plot with posterior density
+m3_corr_tbl2 <- data.frame(Traits = c("OS_VTD",
+                                      "OS_SSD",
+                                      "SSD_VTD"),
+                          Estimate = c(m3_vtd_os_corr[[1]],
+                                       m3_ssd_os_corr[[1]],
+                                       m3_ssd_vtd_corr[[1]]),
+                          Upper = c(m3_vtd_os_corr[[2]][, "upper"],
+                                    m3_ssd_os_corr[[2]][, "upper"],
+                                    m3_ssd_vtd_corr[[2]][, "upper"]),
+                          Lower = c(m3_vtd_os_corr[[2]][, "lower"],
+                                    m3_ssd_os_corr[[2]][, "lower"],
+                                    m3_ssd_vtd_corr[[2]][, "lower"]))
+
+phy_corr_plt_vio <- ggplot(mod3dens_melted,
+                           aes(y = value, 
+                               x = variable)) +
+  geom_violin(size = 1) +
+  geom_point(data = m3_corr_tbl2,
+             aes(x = Traits, y = Estimate),
+             size = 4) +
+  geom_hline(yintercept = 0, 
+             linetype = "dashed",
+             alpha = 1) +
+  geom_errorbar(data = m3_corr_tbl2, 
+                aes(x = Traits, y = Estimate, 
+                    ymin = Lower,
+                    ymax = Upper),
+                position = position_nudge(x = 0), 
+                width = 0.4, size = 1,
+                color = "#E69F00") +
+  scale_x_discrete(limits = c("OS_VTD",
+                              "OS_SSD",
+                              "SSD_VTD"),
+                   labels = c("Ovulation Signs & VTD",
+                              "Ovulation Signs & SSD",
+                              "VTD & SSD")) +
+  labs(x = "",
+       y = ("Phylogenetic Correlation (Estimate +/- 95% HPD)")) +
+  #ylim(0.55, 1.1) +
+  coord_flip() +
+  theme_classic(base_size = 15)
+phy_corr_plt_vio
+phy_corr_plt_vio + theme(axis.text.y = element_text(angle = 45))
 
 #-------------------------- BLUPs analysis --------------------------#
 # Table of BLUPs (aka "ancestral states" in PGLMM)
