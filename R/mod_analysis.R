@@ -24,6 +24,7 @@ load("./Data/10ktree.Rdata")
 load("./Results/Data/TrivMacro_Model_4levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_2levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_Reduced_4levResp.Rdata")
+load("./Results/Data/TrivMacro_Model_Reduced_4levRespFixAll.Rdata")
 load("./Results/Data/BivMacro_Model_Reduced_2levResp.Rdata")
 load("./Results/Data/UniMacro_Model_OvSign.Rdata")
 load("./Results/Data/UniMacro_Model_VTD.Rdata")
@@ -171,6 +172,11 @@ Mod3_Res <- tidy(Mod3,
                  conf.method = "HPDinterval",
                  conf.level = 0.95)
 
+Mod7_Res <- tidy(Mod7, 
+                 effects = c("fixed", "ran_pars"),
+                 conf.int = TRUE, 
+                 conf.method = "HPDinterval",
+                 conf.level = 0.95)
 
 #-----------------------------------------#
 #      Extracting model parameters        #
@@ -221,6 +227,21 @@ m3_vcv <- data.frame(
     Mod3$VCV[, "traitSSD:traitSSD.Species"])),
   "os" = c(as.mcmc(
     Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
+)
+
+m3.1_vcv <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod3.1$VCV[, "traitOvulation_Signs:traitVTDwSD.Species"])),
+  "ssd_os" = c(as.mcmc(
+    Mod3.1$VCV[, "traitOvulation_Signs:traitSSD.Species"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod3.1$VCV[, "traitSSD:traitVTDwSD.Species"])),
+  "vtd" = c(as.mcmc(
+    Mod3.1$VCV[, "traitVTDwSD:traitVTDwSD.Species"])),
+  "ssd" = c(as.mcmc(
+    Mod3.1$VCV[, "traitSSD:traitSSD.Species"])),
+  "os" = c(as.mcmc(
+    Mod3.1$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
 )
 
 m7_vcv <- data.frame(
@@ -276,6 +297,20 @@ m3_ssd_os_corr <- phylo_corr(covar_XY = m3_vcv$ssd_os,
 m3_ssd_vtd_corr <- phylo_corr(covar_XY = m3_vcv$vtd_ssd,
                               var_X = m3_vcv$ssd,
                               var_Y = m3_vcv$vtd)
+
+# Phylogenetic correlations - 4 level OS RAM Model with Lambda fixed 
+# for all vars (instead of just OS)
+m3.1_vtd_os_corr <- phylo_corr(covar_XY = m3.1_vcv$vtd_os,
+                             var_X = m3.1_vcv$vtd,
+                             var_Y = m3.1_vcv$os)
+
+m3.1_ssd_os_corr <- phylo_corr(covar_XY = m3.1_vcv$ssd_os,
+                             var_X = m3.1_vcv$ssd,
+                             var_Y = m3.1_vcv$os)
+
+m3.1_ssd_vtd_corr <- phylo_corr(covar_XY = m3.1_vcv$vtd_ssd,
+                              var_X = m3.1_vcv$ssd,
+                              var_Y = m3.1_vcv$vtd)
 
 # Phylogenetic correlations - binary level OS RAM Model with Lambda fixed
 m7_vtd_os_corr <- phylo_corr(covar_XY = m7_vcv$vtd_os,
@@ -721,6 +756,16 @@ ggarrange(p10,
                     labels = c("B", "C")), 
           nrow = 2, 
           labels = "A",
+          common.legend = TRUE,
+          legend = "bottom"
+)
+
+ggarrange(p8, p9,
+          ggarrange(p10,
+                    ncol = 2, 
+                    labels = c("A", "B")),
+          nrow = 2,
+          labels = c("C"),
           common.legend = TRUE,
           legend = "bottom"
 )
