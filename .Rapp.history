@@ -1,0 +1,239 @@
+factorial(64)
+a <- rnorm(10000)
+a
+mean(a)
+median(a)
+mode(a)
+hist(a)
+diag(2)/3
+diag(4)/5
+ks.sqml <- 2,907,289/82,278
+ks.sqml <- 2907289/82278
+ks.sqml
+guild.sqml <- 35745/58.79
+guild.sqml
+0.1+0.2
+a <- 0.1+0.2, round(5)
+a <- (0.1+0.2), round(5)
+a <- 0.1+0.2
+a
+getwd
+getwd()
+x <- c(.67, .25, .8, .5, .17)
+y <- c(2, .5, 1.3, 1, .25)
+xy <- lm(x~y)
+summary(xy)
+plot(x~y)
+xy <- lm(y~x)
+plot(y~y)
+plot(y~x)
+abline(xy)
+x <- c(3,4,5,6,7,8)
+y <- c(1,2,3,4,5,6)
+xy <- lm(y~x)
+summary(xy)
+plot(y~x)
+abline(xy)
+3/5
+4/6
+5/7
+x/y
+y/x
+w <- y/x
+plot(w~x)
+x_prime <- x-2
+x_prime
+w_prime <- y/x_prime
+plot(w_prime~w)
+plot(x ~ w)
+plot(x ~ w_prime)
+w_prime
+plot(x_prime ~ w_prime)
+x_prime
+w_prime
+iris
+144*9 - 16*(9)^2
+y = x^2 + 2
+function(x) { y = x^2 + 3}
+x
+function
+}
+x
+ls()
+y <- function(x){y = x^2 + 3}
+y
+x <- 1:100
+x
+a <- y(x)
+plot(a)
+m <- function(x){m = x^3 + 2*(x)^2 + 4*x}
+b <- m(x)
+plot(b)
+cos
+c <- m(log(x))
+plot(c)
+d <- y(log(x))
+plot(d)
+norm <- rnorm(3000, mean = 0, sd = 1)
+plot(norm)
+hist(norm)
+a <- y(norm)
+plot(a)
+plot(hist(norm))
+log(norm)
+abc <- y(cos(x))
+plot(abc)
+sinx <- y(sin(x))
+plot(sinx)
+prior.mpe <- list(R = list(V = diag(1), nu = 0.002),#
+                  G = list(G1 = list(V = diag(1), nu = 1, alpha.mu = rep(0,1), #
+                                     alpha.V = diag(1) * a),#
+                           G2 = list(V = diag(1), nu = 1, alpha.mu = rep(0,1), #
+                                      alpha.V = diag(
+))
+]
+v<-seq(0,1,length=1000)#
+par(mfrow=c(2,2))
+library(MCMCglmm)
+plot(MCMCpack::dinvgamma(v, shape = 1.02/2, scale =(2.02*1)/2)~v,  #
+type="l", ylab="Density", xlab="Variance", main="Prior 1")#
+plot(MCMCpack::dinvgamma(v, shape = 1.02/2, scale =(2.02*0.1)/2)~v,  #
+type="l", ylab="Density", xlab="Variance", main="Prior 2")#
+plot(df(v, df1 = 1, df2 = 1.02)~v, type="l", ylab="Density",  #
+xlab="Variance", main="Prior 3")#
+plot(df(v/25, df1 = 1, df2 = 1.02)~v, type="l", ylab="Density",  #
+xlab="Variance", main="Prior 4")
+2*.01
+25^2
+update()
+??update
+e^-1
+exp
+exp(-1)
+exp(2)
+exp(1)
+1^exp(2)
+2^(exp(2))
+log(2)
+log(1)
+log(2)
+log(exp)
+log(exp(1))
+log(2)
+exp(2)
+ln(2)
+2^exp()
+2^exp(1)
+250000 + 100*1000
+250000 + 100*10000
+250000 + 100*20000
+2000 + 10 * 20000
+2000 + 10 * 21000
+prior_overdisp = list(R=list(V=diag(c(1,1)),nu=0.002,fix=2),#
+G=list(list(V=diag(c(1,1e-6)),nu=0.002,fix=2)))
+prior_overdisp
+IJ <- (1/3) * (diag(2) + matrix(1, 2, 2))
+IJ
+nsamp <- 1000#
+BURN <- 100000; THIN <- 100; (NITT <- BURN + THIN*nsamp) # 200000 nitt to start
+2000000
+200000
+BURN <- 10000; THIN <- 100; (NITT <- BURN + THIN*nsamp)
+install.packages("psych")
+library(psych)
+desc <- describe(attitude)#
+x <- desc[1,]#
+y <- desc[2,]#
+error.crosses(x,y,xlab=rownames(x),ylab=rownames(y))
+data(bfi)#
+desc <- describeBy(bfi[1:25],bfi$gender) #select a high and low group#
+error.crosses(desc$'1',desc$'2',ylab="female scores",xlab="male scores",main="BFI scores by gender")#
+ abline(a=0,b=1)
+g1.stats <- data.frame(n=c(10,20,30),mean=c(10,12,18),se=c(2,3,5))#
+g2.stats <- data.frame(n=c(15,20,25),mean=c(6,14,15),se =c(1,2,3))#
+error.crosses(g1.stats,g2.stats)
+library(geiger)
+install.packages("geiger")
+library(geiger)
+geo=get(data(geospiza))
+geo
+dat=geo$dat
+dat
+d1=dat[,1]
+d1
+grp<-as.factor(c(rep(0, 7), rep(1, 6)))
+grp
+names(grp)=rownames(dat)
+grp
+x=aov.phylo(dat~grp, geo$phy, nsim=50, test="Wilks")
+print(attributes(x)$summary) # summary table
+x1=aov.phylo(d1~grp, geo$phy, nsim=50)
+x1
+summary(x1)
+install.packages("BAMMtools")
+library(BAMMtools)
+data(primates, events.primates)
+events.primates
+str(events.primates)
+library(ape)
+data(bird.families)
+bird.families
+opar <- par(mfrow = c(2, 1))
+ltt.plot(bird.families)
+title("Lineages Through Time Plot of the Bird Families")
+ltt.plot(bird.families, log = "y")
+library(phytools)
+data(ecomorph.tree)
+setwd("/Users/jerredschafer/Desktop/Dissertation/Dissertation_Ch6")
+library(MCMCglmmRAM)
+load("./Data/reduced_data.Rdata")#
+load("./Data/10ktree.Rdata")
+reduced_data$animal <- factor(reduced_data$Species)#
+#
+PEprior_Reduced <- list(R = list(V = diag(3) * 1e-15, #
+                                 nu = 0.002, #
+                                 fix = 3), #
+                        G = list(G1 = list(V = diag(3), #
+                                           nu = 0.002, #
+                                           fix = 3)))
+nsamp <- 2000#
+BURN <- 500000; THIN <- 1000; (NITT <- BURN + THIN*nsamp)
+Mod7 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), #
+                                    log(SSD), #
+                                    Ovulation_Signs_bin) ~ #
+                                trait - 1,#
+                              random = ~ us(trait):Species, #
+                              rcov = ~ us(trait):units, #
+                              pedigree = tree, #
+                              family = c("gaussian", #
+                                         "gaussian", #
+                                         "threshold"), #
+                              data = reduced_data,#
+                              prior = PEprior_Reduced,#
+                              pr = TRUE, #
+                              pl = TRUE,#
+                              reduced = TRUE,#
+                              nitt = NITT,#
+                              burnin = BURN,#
+                              thin = THIN)
+install.packages("https://jarrod.bio.ed.ac.uk/MCMCglmmRAM_2.24.tar.gz", #
+                 repos = NULL, type = "source")
+library(MCMCglmmRAM)
+Mod7 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), #
+                                    log(SSD), #
+                                    Ovulation_Signs_bin) ~ #
+                                trait - 1,#
+                              random = ~ us(trait):Species, #
+                              rcov = ~ us(trait):units, #
+                              pedigree = tree, #
+                              family = c("gaussian", #
+                                         "gaussian", #
+                                         "threshold"), #
+                              data = reduced_data,#
+                              prior = PEprior_Reduced,#
+                              pr = TRUE, #
+                              pl = TRUE,#
+                              reduced = TRUE,#
+                              nitt = NITT,#
+                              burnin = BURN,#
+                              thin = THIN)

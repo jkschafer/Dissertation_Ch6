@@ -74,3 +74,54 @@ Mod7 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1),
                               burnin = BURN,
                               thin = THIN)
 save(Mod7, file = "BivMacro_Model_Reduced_2levResp.Rdata")
+
+# Reduced models where VTD and SSD lambda are also fixed at 1
+PEprior_Reduced1 <- list(R = list(V = diag(3) * 1e-15, 
+                                  nu = 0.002, 
+                                  fix = 1), 
+                         G = list(G1 = list(V = diag(3), 
+                                            nu = 0.002)))
+set.seed(8675309) # Calls Jenny for a good time
+
+Mod3.1 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), 
+                                      log(SSD), 
+                                      Ovulation_Signs) ~ 
+                                  trait - 1,
+                                random = ~ corg(trait):Species, 
+                                rcov = ~ corg(trait):units, 
+                                pedigree = tree, 
+                                family = c("gaussian", 
+                                           "gaussian", 
+                                           "threshold"), 
+                                data = reduced_data,
+                                prior = PEprior_Reduced1,
+                                pr = TRUE, 
+                                pl = TRUE,
+                                reduced = TRUE,
+                                nitt = NITT,
+                                burnin = BURN,
+                                thin = THIN)
+save(Mod3.1, file = "TrivMacro_Model_Reduced_4levRespFixAll.Rdata")
+
+
+set.seed(8675309) # Calls Jenny for a good time
+
+Mod7.1 <- MCMCglmmRAM::MCMCglmm(cbind(log(VTDwSD+1), 
+                                      log(SSD), 
+                                      Ovulation_Signs_bin) ~ 
+                                  trait - 1,
+                                random = ~ corg(trait):Species, 
+                                rcov = ~ corg(trait):units, 
+                                pedigree = tree, 
+                                family = c("gaussian", 
+                                           "gaussian", 
+                                           "threshold"), 
+                                data = reduced_data,
+                                prior = PEprior_Reduced1,
+                                pr = TRUE, 
+                                pl = TRUE,
+                                reduced = TRUE,
+                                nitt = NITT,
+                                burnin = BURN,
+                                thin = THIN)
+save(Mod7.1, file = "TrivMacro_Model_Reduced_BinRespFixAll.Rdata")

@@ -24,6 +24,7 @@ load("./Data/10ktree.Rdata")
 load("./Results/Data/TrivMacro_Model_4levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_2levResp.Rdata")
 load("./Results/Data/TrivMacro_Model_Reduced_4levResp.Rdata")
+load("./Results/Data/BivMacro_Model_Reduced_2levResp.Rdata")
 load("./Results/Data/UniMacro_Model_OvSign.Rdata")
 load("./Results/Data/UniMacro_Model_VTD.Rdata")
 load("./Results/Data/UniMacro_Model_SSD.Rdata")
@@ -222,6 +223,20 @@ m3_vcv <- data.frame(
     Mod3$VCV[, "traitOvulation_Signs:traitOvulation_Signs.Species"]))
 )
 
+m7_vcv <- data.frame(
+  "vtd_os" = c(as.mcmc(
+    Mod7$VCV[, "traitOvulation_Signs_bin:traitVTDwSD.Species"])),
+  "ssd_os" = c(as.mcmc(
+    Mod7$VCV[, "traitOvulation_Signs_bin:traitSSD.Species"])),
+  "vtd_ssd" = c(as.mcmc(
+    Mod7$VCV[, "traitSSD:traitVTDwSD.Species"])),
+  "vtd" = c(as.mcmc(
+    Mod7$VCV[, "traitVTDwSD:traitVTDwSD.Species"])),
+  "ssd" = c(as.mcmc(
+    Mod7$VCV[, "traitSSD:traitSSD.Species"])),
+  "os" = c(as.mcmc(
+    Mod7$VCV[, "traitOvulation_Signs_bin:traitOvulation_Signs_bin.Species"]))
+)
 
 # Phylogenetic correlations - 4 level OS Model with Lambda estimated
 m1_vtd_os_corr <- phylo_corr(covar_XY = m1_vcv$vtd_os,
@@ -261,6 +276,19 @@ m3_ssd_os_corr <- phylo_corr(covar_XY = m3_vcv$ssd_os,
 m3_ssd_vtd_corr <- phylo_corr(covar_XY = m3_vcv$vtd_ssd,
                               var_X = m3_vcv$ssd,
                               var_Y = m3_vcv$vtd)
+
+# Phylogenetic correlations - binary level OS RAM Model with Lambda fixed
+m7_vtd_os_corr <- phylo_corr(covar_XY = m7_vcv$vtd_os,
+                             var_X = m7_vcv$vtd,
+                             var_Y = m7_vcv$os)
+
+m7_ssd_os_corr <- phylo_corr(covar_XY = m7_vcv$ssd_os,
+                             var_X = m7_vcv$ssd,
+                             var_Y = m7_vcv$os)
+
+m7_ssd_vtd_corr <- phylo_corr(covar_XY = m7_vcv$vtd_ssd,
+                              var_X = m7_vcv$ssd,
+                              var_Y = m7_vcv$vtd)
 
 #----------- Ploting posterior correlations ---------------#
 # 4 level OS sign with lambda estimated
@@ -376,7 +404,7 @@ p2 <- ggplot(mod3dens_melted,
   xlim(-0.1, 1) +
   labs(x = "Posterior",
        y = "Density") +
-  scale_fill_manual(name = "Phylogenetic Correlation",
+  scale_fill_manual(name = "",
                     labels = c("Ovulation Signs & VTD", 
                                "Ovulation Signs & SSD", 
                                "VTD & SSD"),
@@ -387,7 +415,48 @@ p2 <- ggplot(mod3dens_melted,
 p2 <- p2 + theme(legend.position = c(0.3, 0.8),
                  legend.direction = "vertical",
                  legend.background = element_rect(fill = "darkgray"))
+p2 <- p2 + theme(legend.position = "top",
+                 legend.direction = "horizontal",
+                 legend.background = element_rect(fill = "darkgray"))
 
+# 2 level OS sign with lambda fixed
+m7_post_cor_vtd_os <- m7_vcv$vtd_os/
+  sqrt(m7_vcv$os * m7_vcv$vtd)
+
+m7_post_cor_ssd_os <- m7_vcv$ssd_os/
+  sqrt(m7_vcv$os * m7_vcv$ssd)
+
+m7_post_cor_ssd_vtd <- m7_vcv$vtd_ssd/
+  sqrt(m7_vcv$vtd * m7_vcv$ssd)
+
+mod7dens <- data.frame(OS_VTD = c(m7_post_cor_vtd_os),
+                       OS_SSD = c(m7_post_cor_ssd_os),
+                       SSD_VTD = c(m7_post_cor_ssd_vtd))
+
+# Melt data for density plots
+mod7dens_melted <- melt(mod7dens)
+
+# Phylogenetic model plot
+p2.1 <- ggplot(mod7dens_melted, 
+             aes(x = value, 
+                 fill = variable)) + 
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = 0,
+             color = "#000000",
+             linetype = "dashed") +
+  xlim(-0.5, 1) +
+  labs(x = "Posterior",
+       y = "Density") +
+  scale_fill_manual(name = "Phylogenetic Correlation",
+                    labels = c("Ovulation Signs & VTD", 
+                               "Ovulation Signs & SSD", 
+                               "VTD & SSD"),
+                    values = c("#D55E00", 
+                               "#0072B2", 
+                               "#009E73")) +
+  theme_classic(base_size = 15)
+p2.1 <- p2.1 + theme(legend.position = "none")
+p2.1
 # Combining plots in one figure
 ggarrange(p2,                                                 
           ggarrange(p1, p1.1, 
@@ -397,7 +466,11 @@ ggarrange(p2,
           labels = "A"                                        
 )
 
-
+ggarrange(p2, p2.1, p1, p1.1,
+          ncol = 2, nrow = 2,
+          labels = c("A", "B", "C", "D"),
+          common.legend = TRUE,
+          legend = "bottom")
 #--------------------------------------------------------------------#
 #    Different plots for visualizing magnitude of correlations       #
 #--------------------------------------------------------------------#
