@@ -760,16 +760,6 @@ ggarrange(p10,
           legend = "bottom"
 )
 
-ggarrange(p8, p9,
-          ggarrange(p10,
-                    ncol = 2, 
-                    labels = c("A", "B")),
-          nrow = 2,
-          labels = c("C"),
-          common.legend = TRUE,
-          legend = "bottom"
-)
-
 # Correlation between trait correlations and speciation rate
 cor_g_ape_os_vtd <- cor.test(df_bf_coefs$traitOvulation_Signs[which(
   df_bf_coefs$clade == "Hominidae")], df_bf_coefs$traitVTDwSD[which(
@@ -1120,6 +1110,23 @@ post_mod_plt <- ggplot(post_mod_Res_slopes,
   theme_classic(base_size = 15)
 post_mod_plt + theme(axis.text.y = element_text(angle = 45))
 
+# Plot for papio species for discussion
+df_paps <- filter(df_bf_coefs, 
+                  grepl("Macaca", 
+                        Species))
+
+pPaps <- ggplot(data = df_paps,
+              aes(x = traitOvulation_Signs,
+                  y = traitSSD)) +
+  geom_point() +
+  #geom_smooth(method = "lm", se = F) + 
+  #geom_abline(intercept = 0, 
+  #            slope = mean(vtd_ssd_slope),
+  #            size = 1) +
+  labs(y = "Ovulation Signs (BLUP)",
+       x = "SSD (BLUP)") +
+  theme_classic(base_size = 15)
+pPaps
 # Attempt to extract species MCMC samples for correlations
 # instead of correlation of blup means
 dftest <- Mod3$Sol[, grep(pattern = "Species*", 
