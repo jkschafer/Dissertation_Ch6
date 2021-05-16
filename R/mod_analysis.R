@@ -707,7 +707,29 @@ df_bf_coefs$clade <- ifelse(df_bf_coefs$Species %in% gr_ape,
                             ifelse(df_bf_coefs$Species %in% colobs,
                                    paste0("Colobinae"),
                             paste0("Cercopithecini"))))))
+# Boxplot of phylogenetic effects
+df_bf_coefs_melt <- melt(df_bf_coefs, 
+                         id = c("Species", "clade"))
 
+pBoxplt <- ggplot(df_bf_coefs_melt, 
+                  aes(x= variable, 
+                      y = value, 
+                      fill = clade)) + 
+  geom_boxplot() +
+  labs(x = "",
+       y = "Phylogenetic effect (BLUP)") +
+  scale_x_discrete(limits = c("traitOvulation_Signs",
+                              "traitSSD",
+                              "traitVTDwSD"),
+                   labels = c("Ovulation Signs",
+                              "SSD",
+                              "VTD")) +
+  #coord_flip() +
+  theme_classic(base_size = 15) 
+  #facet_wrap(~clade, scales = "free")
+pBoxplt #+ theme(axis.text.y = element_text(angle = 45))
+
+# Bivariate plots
 p8 <- ggplot(data = df_bf_coefs,
              aes(x = traitVTDwSD,
              y = traitOvulation_Signs,
