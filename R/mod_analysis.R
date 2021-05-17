@@ -612,7 +612,7 @@ df_bf_coefs_error <- tibble(Trait = attr(colMeans(Mod3$Sol), "names"),
   filter(Trait %in% c("traitVTDwSD", 
                       "traitSSD", 
                       "traitOvulation_Signs")) %>% 
-  select(-Type)
+  dplyr::select(-Type)
 
 
 #--------- Plot of posterior BLUPs ------------------------#
@@ -716,6 +716,9 @@ pBoxplt <- ggplot(df_bf_coefs_melt,
                       y = value, 
                       fill = clade)) + 
   geom_boxplot() +
+  geom_hline(yintercept = 0, 
+             linetype = "dashed",
+             alpha = 1) +
   labs(x = "",
        y = "Phylogenetic effect (BLUP)") +
   scale_x_discrete(limits = c("traitOvulation_Signs",
@@ -724,10 +727,18 @@ pBoxplt <- ggplot(df_bf_coefs_melt,
                    labels = c("Ovulation Signs",
                               "SSD",
                               "VTD")) +
+  scale_fill_discrete(name = "Clade", 
+                      labels = c("Cercopithecini (N = 12)", 
+                                 "Colobinae (N = 15)", 
+                                 "Hominidae (N = 7)", 
+                                 "Hylobatidae (N = 11)", 
+                                 "Papioini (N = 25)", 
+                                 "Platyrrhini (N = 29)")) +
   #coord_flip() +
   theme_classic(base_size = 15) 
   #facet_wrap(~clade, scales = "free")
-pBoxplt #+ theme(axis.text.y = element_text(angle = 45))
+pBoxplt + theme(legend.position = "bottom",
+                legend.background = element_rect(fill = "darkgray"))
 
 # Bivariate plots
 p8 <- ggplot(data = df_bf_coefs,
